@@ -585,7 +585,7 @@ footer {
     border-radius: 8px;
     padding: 0.9rem 1rem;
     color: #f1f5f9;
-    font-size: 1rem;
+    font-size: 16px;
     width: -webkit-fill-available;
     transition: all 0.3s;
 }
