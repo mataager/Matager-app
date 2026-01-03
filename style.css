@@ -60,10 +60,8 @@ body {
 /* Main Content Sections */
 
 .floating-logo {
-    top: 70px;
-    left: 20%;
     display: flex;
-    position: absolute;
+    position: relative;
     transition: transform 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease;
     opacity: 0.7;
 }
@@ -103,7 +101,7 @@ body {
 }
 
 .section-content {
-    max-width: 1200px;
+    max-width: 2300px;
     margin: 0 auto;
     padding: 2rem;
     display: grid;
@@ -396,9 +394,13 @@ footer {
 
 /* Scroll Indicator */
 .scroll-indicator {
+    padding: 10px;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid #334155;
+    border-radius: 10px;
     position: fixed;
-    right: 2rem;
     top: 90%;
+    right: 15px;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
@@ -420,6 +422,12 @@ footer {
 }
 
 /* Responsive */
+@media (max-width: 620px) {
+    .hero-section .section-content {
+        padding-top: 145px !important;
+    }
+}
+
 @media (max-width: 1024px) {
     .section-content {
         grid-template-columns: 1fr !important;
@@ -477,12 +485,67 @@ footer {
 
 /* Login Form */
 .login-container {
+    /* Your existing styles preserved */
     background: rgba(15, 23, 42, 0.8);
-    border: 1px solid #334155;
     border-radius: 16px;
     padding: 2rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
+
+    /* Setup for the snake */
+    position: relative;
+    border: 1px solid transparent;
+    /* Set actual border to transparent */
+    background-clip: padding-box;
+    /* Prevents background from bleeding into border space */
+}
+
+/* The Snake Animation Layer */
+.login-container::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    /* Positions exactly where the 1px border is */
+    border-radius: 16px;
+    padding: 1px;
+    /* The thickness of the snake */
+
+    /* The Snake Gradient: Adjust #38bdf8 to your preferred color */
+    background: linear-gradient(90deg,
+            transparent 0%,
+            transparent 25%,
+            #38bdf8 50%,
+            transparent 75%,
+            transparent 100%);
+
+    background-size: 200% 200%;
+    animation: snake-move 3s linear infinite;
+
+    /* The Mask: This hides the "middle" of the gradient so only the edge shows */
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+
+/* Rhythmic movement around the perimeter */
+@keyframes snake-move {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .login-title {
@@ -1428,7 +1491,7 @@ footer {
     width: 300px;
     background: rgba(15, 23, 42, 0.8);
     border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: 20px;
+    border-radius: 12px;
     display: flex;
     justify-content: space-around;
     margin-top: 15px;
@@ -1441,10 +1504,10 @@ footer {
     font-size: small;
     gap: 5px;
     width: 50%;
-    margin: 8px;
+    margin: 5px;
     padding: 8px 25px;
     color: white;
-    border-radius: 15px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 400;
     transition: all 0.3s ease;
@@ -1471,15 +1534,21 @@ footer {
 }
 
 .plans-grid {
+    box-shadow: 0 2px 15px #0ca1e42e;
+    border-radius: 15px;
     border-bottom-right-radius: 80px;
     border-top-right-radius: 80px;
     padding: 40px 30px;
     overflow: scroll;
-    border-right: 3px solid rgb(52 113 141 / 39%);
     display: flex;
     gap: 1.5rem;
     justify-content: flex-start;
     transition: all 0.3s ease;
+}
+
+.logo-main {
+    position: absolute;
+    width: 100%;
 }
 
 @media (min-width: 901px) {
@@ -1488,8 +1557,17 @@ footer {
     }
 }
 
+@media (max-width: 470px) {
+    .logo-main {
+        padding: 20px;
+        translate: 22%;
+        width: 70%;
+    }
+}
+
 @media (max-width: 1025px) {
     .scroll-indicator {
+        right: -25px;
         top: 50%;
     }
 
@@ -1499,21 +1577,25 @@ footer {
 
     .plans-grid {
         height: 625px;
-        border-radius: 0px;
         border: none;
         flex-direction: column;
         align-items: center;
         padding: 1rem;
+        box-shadow: 0 2px 15px #0ca1e42e;
+        border-radius: 25px;
+    }
+
+    .comparison-table {
+        width: 700px;
     }
 
     .comparison-section,
     .plans-section {
+        /* box-shadow: 0 2px 15px #0ca1e42e; */
         padding: 0px !important;
     }
 
-    .comparison-table {
-        max-width: 500px;
-    }
+
 
     .scroll-text-indicator {
         display: none;
@@ -1572,6 +1654,38 @@ footer {
     transition: max-height 0.5s ease;
 }
 
+@media (max-width: 800px) {
+    .comparison-table {
+        max-width: 500px;
+    }
+
+    .table-header,
+    .table-row {
+        display: grid;
+        grid-template-columns: 200px repeat(5, minmax(80px, 1fr)) !important;
+        width: max-content;
+    }
+}
+
+@media (max-width: 450px) {
+
+    /* Allow the table to scroll horizontally if it exceeds the screen width */
+    .comparison-table {
+        width: 100%;
+        max-width: 300px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+    }
+
+    .table-header,
+    .table-row {
+        display: grid;
+        grid-template-columns: 150px repeat(5, minmax(80px, 1fr)) !important;
+        width: max-content;
+    }
+}
+
 @media (max-width: 1025px) {
     .plan-features {
         max-height: 0;
@@ -1588,6 +1702,7 @@ footer {
 }
 
 .feature-item {
+    margin-bottom: 5px;
     padding: 0.7rem 0;
     display: flex;
     align-items: center;
@@ -1671,6 +1786,7 @@ footer {
     padding: 40px 30px;
     height: 600px;
     display: none;
+    margin-inline: auto;
 }
 
 .comparison-section.active,
@@ -1692,7 +1808,6 @@ footer {
 }
 
 .comparison-table {
-    margin-inline: auto;
     border-radius: 33px;
     overflow: hidden;
     position: relative;
@@ -1815,10 +1930,7 @@ footer {
     padding-left: 20px;
 }
 
-.plan-features li {
-    margin-bottom: 5px;
-    color: #555;
-}
+
 
 .promo-container {
     display: flex;
@@ -1863,10 +1975,11 @@ footer {
 
 .payment-summary h4 {
     margin: 0 0 15px 0;
-    /* color: #333; */
+    color: #cbd5e1;
 }
 
 .summary-row {
+    color: #cbd5e1;
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -1883,10 +1996,10 @@ footer {
 }
 
 .payment-methods {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 10px;
+    display: flex;
+    gap: 15px;
     margin-top: 10px;
+    flex-wrap: wrap;
 }
 
 .payment-option {
@@ -1958,10 +2071,6 @@ footer {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-    .payment-methods {
-        grid-template-columns: 1fr;
-    }
-
     .wallet-options {
         flex-direction: column;
         gap: 10px;
