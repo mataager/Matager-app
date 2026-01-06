@@ -10,6 +10,14 @@
     <!-- For modern browsers -->
     <link rel="icon" type="image/png" href="./favicon-96x96.png">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="moves.js"></script>
+    <script src="./app/config/init-firebase.js"></script>
+
 </head>
 
 <body>
@@ -38,848 +46,1146 @@
             <div class="floating-logo">
                 <img src="./logo.png" alt="METACER" class="logo-main">
             </div>
-            <div class="section-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">Launch your E-Commerce Platform and start <span
-                            class="highlight-text">selling
-                            Now</span> </h1>
-                    <p class="hero-subtitle">A compined platform featuring e-commerce website, inventory management,
-                        order
-                        processing, customer analytics, and seamless payment integrations. Designed for especially for
-                        your kick start.</p>
-                    <div class="cta-buttons">
-                        <button class="btn-primary" id="get-started-btn">Get Started</button>
-                        <button class="btn-secondary">View Demo <i class="fa-solid fa-video"></i></button>
+            <div class="glassycardlight">
+                <div class="section-content firstsection">
+                    <div class="leftdiv">
+
+                        <div class="hero-text">
+                            <h1 class="hero-title">Launch your E-Commerce Platform and start <span
+                                    class="highlight-text">selling
+                                    Now</span> </h1>
+                            <p class="hero-subtitle">A compined platform featuring e-commerce website, inventory
+                                management,
+                                order
+                                processing, customer analytics, and seamless payment integrations. Designed for
+                                especially
+                                for
+                                your kick start.</p>
+                            <div class="cta-buttons">
+                                <button class="btn-primary" id="get-started-btn">Get Started</button>
+                                <button class="btn-secondary">View Demo <i class="fa-solid fa-video"></i></button>
+                                <button class="btn-secondary" onclick="fillTestData()">test<i
+                                        class="fa-solid fa-video"></i></button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="scroll-text-indicator">
-                        <div class="scroll-text">Scroll to continue</div>
-                        <i class="fas fa-chevron-down"></i>
+                    <div class="rightdiv">
+                        <section class="login-container" id="login-container">
+                            <p class="login-subtitle" id="form-title">Sign in to continue</p>
+
+                            <!-- Progress Indicator -->
+                            <div class="progress-container" id="progress-container">
+                                <div class="progress-header">
+                                    <span class="progress-title">Account Setup Progress</span>
+                                    <span class="progress-percentage" id="progress-percentage">0%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Success Message (Hidden by default) -->
+                            <div class="success-message" id="success-message">
+                                <div class="success-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <h3 class="success-title">Account Created Successfully!</h3>
+                                <p class="success-text">Your Matager account has been created. Check your email to
+                                    verify
+                                    your
+                                    account.
+                                </p>
+                                <button class="btn-primary" id="back-to-login">Back to Login</button>
+                            </div>
+
+                            <form class="login-form" id="login-form">
+                                <!-- Base form fields (always visible) -->
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" id="email" class="form-input" placeholder="you@example.com"
+                                        required="" maxlength="100">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="password-container">
+                                        <input type="password" id="password" class="form-input"
+                                            placeholder="Enter your password" required="" maxlength="50">
+                                    </div>
+                                </div>
+
+                                <!-- Additional signup fields (hidden by default) -->
+                                <div class="additional-field" id="full-name-field">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="first-name" class="form-label">First Name</label>
+                                            <input type="text" id="first-name" class="form-input" placeholder="omar"
+                                                maxlength="50">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last-name" class="form-label">Last Name</label>
+                                            <input type="text" id="last-name" class="form-input" placeholder="mohamed"
+                                                maxlength="50">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="additional-field" id="business-field">
+                                    <div class="form-group">
+                                        <label for="business-name" class="form-label">Business Name</label>
+                                        <input type="text" id="business-name" class="form-input"
+                                            placeholder="My Online Store" maxlength="30">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="business-category" class="form-label">Business Category</label>
+                                        <select id="business-category" class="form-input">
+                                            <!-- <option value="">Select business category</option> -->
+                                            <option value="clothing">Clothing & Apparel</option>
+                                            <option value="jewelry">Jewelry & Watches</option>
+                                            <option value="accessories">Fashion Accessories</option>
+                                            <option value="sneakers">Sneakers & Footwear</option>
+                                            <option value="electronics">Electronics & Gadgets</option>
+                                            <option value="furniture">Furniture & Home Decor</option>
+                                            <option value="tobacco">Tobacco & Smoking Products</option>
+                                            <option value="toys">Toys & Games</option>
+                                            <option value="beauty">Beauty & Cosmetics</option>
+                                            <option value="sports">Sports & Outdoor</option>
+                                            <option value="other">Other Category</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <!-- Phone Numbers -->
+                                <div class="additional-field" id="phone-field">
+                                    <div class="form-group">
+                                        <label for="phone" class="form-label">Phone Number</label>
+                                        <input type="tel" id="phone" class="form-input" placeholder="(+20) 1010-773-587"
+                                            maxlength="15">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="business-phone" class="form-label">Business Phone Number
+                                            (Optional)</label>
+                                        <input type="tel" id="business-phone" class="form-input"
+                                            placeholder="(+20) 1010-773-253" maxlength="15">
+                                    </div>
+                                </div>
+
+
+                                <!-- Business Location with Google Maps -->
+                                <div class="additional-field" id="business-location-field">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="country" class="form-label">Country</label>
+                                            <input type="text" id="country" class="form-input"
+                                                placeholder="United States">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="city" class="form-label">City</label>
+                                            <input type="text" id="city" class="form-input" placeholder="New York">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="district" class="form-label">District</label>
+                                            <input type="text" id="district" class="form-input" placeholder="Manhattan">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Plan Selection Field -->
+                                <div class="additional-field" id="plan-field">
+                                    <div class="form-group">
+                                        <label for="plan-type" class="form-label">Select Your Plan</label>
+                                        <select id="plan-type" class="form-input plan-select" required="">
+                                            <option value="">Choose a plan</option>
+                                            <option value="free" data-price="0" data-period="month">Free Trial -
+                                                $0/month
+                                                (14
+                                                days)</option>
+                                            <option value="TheOne" data-price="80" data-period="month">The One -
+                                                80 EGP/month
+                                                <span>holding (1) product maxly</span>
+                                            </option>
+                                            <option value="FastCart" data-price="280" data-period="month">Fast Cart -
+                                                280 EGP/month
+                                                <span>holding (10) product maxly</span>
+                                            </option>
+                                            <option value="FastCartplus" data-price="370" data-period="month">Fast Cart
+                                                Plus
+                                                - 370 EGP/month
+                                                <span>holding (20) product maxly</span>
+                                            </option>
+                                            <option value="Matagerfull" data-price="750" data-period="month">Matager
+                                                Full -
+                                                750 EGP/month
+                                                <span>holding (100) product maxly</span>
+                                            </option>
+                                            <option value="Matagerfullplus" data-price="1300" data-period="month">
+                                                Matager
+                                                Full
+                                                Plus -
+                                                1300 EGP/month
+                                                <span>holding (240) product maxly</span>
+                                            </option>
+                                        </select>
+                                        <div class="select-helper" onclick="scrollToSection('Pricing')">Click to view
+                                            all
+                                            available plans</div>
+                                    </div>
+
+
+                                </div>
+
+                                <!-- Promo Code Field -->
+                                <div class="additional-field" id="promo-field">
+                                    <div class="form-group">
+                                        <label for="promo-code" class="form-label">Promo Code (Optional)</label>
+                                        <div class="promo-container">
+                                            <input type="text" id="promo-code" class="form-input"
+                                                placeholder="Enter promo code">
+                                            <button type="button" class="promo-btn" id="apply-promo">Apply</button>
+                                        </div>
+                                        <div class="promo-message" id="promo-message"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Summary -->
+                                <div class="additional-field" id="payment-summary-field">
+                                    <div class="payment-summary">
+                                        <h4>Order Summary</h4>
+                                        <div class="summary-row">
+                                            <span>Plan:</span>
+                                            <span id="selected-plan">None selected</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Plan Price:</span>
+                                            <span id="plan-price">0.00</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Discount:</span>
+                                            <span id="discount-amount">0.00</span>
+                                        </div>
+                                        <div class="summary-row total">
+                                            <span>Total:</span>
+                                            <span id="total-price">0.00</span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Billing Period:</span>
+                                            <span id="billing-period">Monthly</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Method Selection -->
+                                <div class="additional-field" id="payment-method-field">
+                                    <div class="form-group">
+                                        <label class="form-label">Payment Method</label>
+                                        <div class="payment-methods">
+                                            <label class="payment-option">
+                                                <input type="radio" name="payment-method" value="credit-card"
+                                                    checked="">
+                                                <div class="payment-option-content">
+                                                    <i class="fa-solid fa-credit-card"></i>
+                                                    <span>Card</span>
+                                                </div>
+                                            </label>
+                                            <label class="payment-option">
+                                                <input type="radio" name="payment-method" value="mobile-wallet">
+                                                <div class="payment-option-content">
+                                                    <i class="fa-solid fa-mobile-screen-button"></i>
+                                                    <span>Mobile Wallet</span>
+                                                </div>
+                                            </label>
+                                            <label class="payment-option">
+                                                <input type="radio" name="payment-method" value="paypal">
+                                                <div class="payment-option-content">
+                                                    <i class="fa-brands fa-paypal"></i>
+                                                    <span>PayPal</span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Credit Card Details (shown when credit card is selected) -->
+                                    <div class="payment-details" id="credit-card-details" style="display: flex;">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="card-number" class="form-label">Card Number</label>
+                                                <input type="text" id="card-number" class="form-input"
+                                                    placeholder="1234 5678 9012 3456" maxlength="19">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label for="card-expiry" class="form-label">Expiry Date</label>
+                                                <input type="text" id="card-expiry" class="form-input"
+                                                    placeholder="MM/YY" maxlength="5">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="card-cvc" class="form-label">CVC</label>
+                                                <input type="text" id="card-cvc" class="form-input" placeholder="123"
+                                                    maxlength="4">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="card-name" class="form-label">Name on Card</label>
+                                            <input type="text" id="card-name" class="form-input" placeholder="John Doe"
+                                                maxlength="20">
+                                        </div>
+                                        <p>After clicking "Pay &amp; Submit", you will be redirected to complete your
+                                            payment
+                                            through:</p>
+                                    </div>
+
+                                    <!-- Mobile Wallet Instructions (shown when mobile wallet is selected) -->
+                                    <div class="payment-details" id="mobile-wallet-details" style="display: none;">
+                                        <div class="wallet-instructions">
+                                            <p>After clicking "Pay &amp; Submit", you will be redirected to complete
+                                                your
+                                                payment
+                                                through:</p>
+                                            <div class="wallet-options">
+                                                <div class="wallet-option">
+                                                    <i class="fa-brands fa-apple"></i>
+                                                    <span>Apple Pay</span>
+                                                </div>
+                                                <div class="wallet-option">
+                                                    <i class="fa-brands fa-google"></i>
+                                                    <span>Google Pay</span>
+                                                </div>
+                                                <div class="wallet-option">
+                                                    <i class="fa-solid fa-wallet"></i>
+                                                    <span>Other Wallets</span>
+                                                </div>
+                                            </div>
+                                            <p class="note">Make sure your mobile wallet is set up and ready for
+                                                payment.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="additional-field" id="terms-field">
+                                    <div class="terms-container">
+                                        <input type="checkbox" id="terms" class="remember-checkbox" required="">
+                                        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a
+                                                href="#">Privacy
+                                                Policy</a></label>
+                                    </div>
+                                    <div class="terms-container">
+                                        <input type="checkbox" id="marketing" class="remember-checkbox">
+                                        <label for="marketing">Send me marketing emails and updates</label>
+                                    </div>
+                                    <div class="terms-container">
+                                        <input type="checkbox" id="auto-renew" class="remember-checkbox" checked="">
+                                        <label for="auto-renew">Auto-renew my subscription</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-options" id="login-options">
+                                    <div class="remember-me">
+                                        <input type="checkbox" id="remember" class="remember-checkbox">
+                                        <label for="remember">Remember me</label>
+                                    </div>
+                                    <a href="#" class="forgot-link">Forgot password?</a>
+                                </div>
+
+                                <button type="submit" class="login-btn" id="submit-btn">
+                                    Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                </button>
+
+                                <div class="divider" id="divider">
+                                    <div class="divider-line"></div>
+                                    <div class="divider-text">Or</div>
+                                    <div class="divider-line"></div>
+                                </div>
+
+                                <div class="social-login">
+                                    <button type="button" class="social-btn" id="social-btn">
+                                        Get Started
+                                    </button>
+                                </div>
+
+                                <div class="signup-link" id="signup-link">
+                                    Don't have an account? <a href="#" id="switch-to-signup">Sign up for free</a>
+                                </div>
+                            </form>
+
+
+
+                            <script>
+
+                                // Promo codes database
+                                const promoCodes = {
+                                    'WELCOME20': { type: 'percentage', value: 20, valid: true },
+                                    'SAVE50': { type: 'fixed', value: 50, valid: true },
+                                    'SUMMER25': { type: 'percentage', value: 25, valid: true },
+                                    'FIRSTYEAR': { type: 'percentage', value: 30, valid: true }
+                                };
+
+                                let appliedPromo = null;
+                                let currentPlanPrice = 0;
+                                let discountAmount = 0;
+
+                                // Plan selection change handler
+                                document.getElementById('plan-type').addEventListener('change', function () {
+                                    const selectedOption = this.options[this.selectedIndex];
+                                    const planId = selectedOption.value;
+                                    const planPrice = parseFloat(selectedOption.dataset.price) || 0;
+                                    const period = selectedOption.dataset.period || 'month';
+                                    const planName = selectedOption.text.split(' - ')[0];
+
+                                    currentPlanPrice = planPrice;
+
+                                    // Update UI
+                                    document.getElementById('selected-plan').textContent = planName;
+                                    document.getElementById('plan-price').textContent = formatPrice(planPrice, period);
+                                    document.getElementById('billing-period').textContent = period === 'month' ? 'Monthly' : 'Yearly';
+
+                                    // Show/hide plan details
+
+                                    // Recalculate total
+                                    calculateTotal();
+                                });
+
+                                // Apply promo code
+                                document.getElementById('apply-promo').addEventListener('click', function () {
+                                    const promoCode = document.getElementById('promo-code').value.trim().toUpperCase();
+                                    const messageElement = document.getElementById('promo-message');
+
+                                    if (!promoCode) {
+                                        messageElement.textContent = 'Please enter a promo code';
+                                        messageElement.className = 'promo-message error';
+                                        return;
+                                    }
+
+                                    if (promoCodes[promoCode] && promoCodes[promoCode].valid) {
+                                        appliedPromo = promoCodes[promoCode];
+                                        messageElement.textContent = `Promo code applied successfully! ${appliedPromo.type === 'percentage' ? appliedPromo.value + '%' : '$' + appliedPromo.value} discount`;
+                                        messageElement.className = 'promo-message success';
+                                        calculateTotal();
+                                    } else {
+                                        messageElement.textContent = 'Invalid or expired promo code';
+                                        messageElement.className = 'promo-message error';
+                                        appliedPromo = null;
+                                        calculateTotal();
+                                    }
+                                });
+
+                                // Payment method change handler
+                                document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+                                    radio.addEventListener('change', function () {
+                                        // Hide all payment details
+                                        document.querySelectorAll('.payment-details').forEach(detail => {
+                                            detail.style.display = 'none';
+                                        });
+
+                                        // Show selected payment method details
+                                        if (this.value === 'credit-card') {
+                                            document.getElementById('credit-card-details').style.display = 'flex';
+                                        } else if (this.value === 'mobile-wallet') {
+                                            document.getElementById('mobile-wallet-details').style.display = 'block';
+                                        }
+                                    });
+                                });
+
+                                // Calculate total price
+                                function calculateTotal() {
+                                    const planPrice = currentPlanPrice;
+
+                                    // Apply discount
+                                    let discount = 0;
+                                    if (appliedPromo) {
+                                        if (appliedPromo.type === 'percentage') {
+                                            discount = planPrice * (appliedPromo.value / 100);
+                                        } else {
+                                            discount = appliedPromo.value;
+                                        }
+
+                                        // Ensure discount doesn't exceed plan price
+                                        discount = Math.min(discount, planPrice);
+                                    }
+
+                                    discountAmount = discount;
+                                    const total = planPrice - discount;
+
+                                    // Update UI
+                                    document.getElementById('discount-amount').textContent = formatPrice(discount);
+                                    document.getElementById('total-price').textContent = formatPrice(total);
+
+                                    // Update submit button text
+                                    const submitBtn = document.getElementById('submit-btn');
+                                    if (total > 0) {
+                                        submitBtn.innerHTML = `Pay ${formatPrice(total)} <i class="fa-solid fa-lock"></i>`;
+                                    } else {
+                                        submitBtn.innerHTML = 'Sign Up Free <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+                                    }
+                                }
+
+                                // Format price display
+                                function formatPrice(amount, period = '') {
+                                    if (amount === 0) return 'Free';
+
+                                    if (period === 'year') {
+                                        return `${amount.toFixed(0)}/year`;
+                                    } else if (period === 'month') {
+                                        return `${amount.toFixed(2)}/month`;
+                                    }
+
+                                    return `${amount.toFixed(2)} EGP`;
+                                }
+
+
+
+                                // Enhanced Form submission
+
+
+
+                                // Enhanced Form submission
+                                document.getElementById('login-form').addEventListener('submit', async function (e) {
+                                    e.preventDefault();
+
+                                    // Check if this is login or signup mode
+                                    const isSignupMode = document.getElementById('full-name-field').style.display !== 'none';
+
+                                    if (isSignupMode) {
+                                        await handleSignup();
+                                    } else {
+                                        await handleLogin();
+                                    }
+                                });
+
+                                // Handle user signup
+                                async function handleSignup() {
+                                    try {
+                                        // Collect all form data
+                                        const email = document.getElementById('email').value.trim().toLowerCase();
+                                        const password = document.getElementById('password').value;
+                                        const firstName = document.getElementById('first-name').value.trim();
+                                        const lastName = document.getElementById('last-name').value.trim();
+                                        const fullName = firstName + ' ' + lastName;
+                                        const phone = document.getElementById('phone').value.trim();
+                                        const businessName = document.getElementById('business-name').value.trim();
+                                        const businessCategory = document.getElementById('business-category').value;
+                                        const country = document.getElementById('country').value.trim();
+                                        const city = document.getElementById('city').value.trim();
+                                        const district = document.getElementById('district').value.trim();
+                                        const plan = document.getElementById('plan-type').value;
+                                        const planName = document.getElementById('plan-type').options[
+                                            document.getElementById('plan-type').selectedIndex
+                                        ].text.split(' - ')[0];
+
+                                        // Validate required fields
+                                        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                            alert('Please enter a valid email address');
+                                            return;
+                                        }
+
+                                        if (!password || password.length < 6) {
+                                            alert('Password must be at least 6 characters');
+                                            return;
+                                        }
+
+                                        if (!firstName || firstName.length < 2) {
+                                            alert('First name is required');
+                                            return;
+                                        }
+
+                                        if (!lastName || lastName.length < 2) {
+                                            alert('Last name is required');
+                                            return;
+                                        }
+
+                                        if (!phone) {
+                                            alert('Phone number is required');
+                                            return;
+                                        }
+
+                                        if (!businessName) {
+                                            alert('Business name is required');
+                                            return;
+                                        }
+
+                                        if (!businessCategory) {
+                                            alert('Business category is required');
+                                            return;
+                                        }
+
+                                        if (!country || !city || !district) {
+                                            alert('Please fill in all location fields');
+                                            return;
+                                        }
+
+                                        if (!plan) {
+                                            alert('Please select a plan');
+                                            return;
+                                        }
+
+                                        if (!document.getElementById('terms').checked) {
+                                            alert('You must agree to the Terms of Service and Privacy Policy');
+                                            return;
+                                        }
+
+                                        // Show loading state
+                                        const submitBtn = document.getElementById('submit-btn');
+                                        const originalText = submitBtn.innerHTML;
+                                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                                        submitBtn.disabled = true;
+
+                                        // Calculate expiry date
+                                        function calculateExpiryDate(planType) {
+                                            const now = new Date();
+                                            let expiry = new Date();
+
+                                            switch (planType) {
+                                                case 'free':
+                                                    expiry.setDate(now.getDate() + 14); // 14-day trial
+                                                    break;
+                                                case 'TheOne':
+                                                case 'FastCart':
+                                                case 'FastCartplus':
+                                                case 'Matagerfull':
+                                                case 'Matagerfullplus':
+                                                    expiry.setMonth(now.getMonth() + 1); // 1 month for paid plans
+                                                    break;
+                                                default:
+                                                    expiry.setMonth(now.getMonth() + 1);
+                                            }
+
+                                            return expiry.toISOString();
+                                        }
+
+                                        const expDate = calculateExpiryDate(plan);
+                                        const startedAt = new Date().toISOString();
+
+                                        // Create user in Firebase Authentication
+                                        auth.createUserWithEmailAndPassword(email, password)
+                                            .then((userCredential) => {
+                                                const user = userCredential.user;
+
+                                                // Update user's display name
+                                                return user.updateProfile({
+                                                    displayName: fullName
+                                                }).then(() => {
+                                                    return user; // Return user for chaining
+                                                });
+                                            })
+                                            .then((user) => {
+                                                // Get user token
+                                                return user.getIdToken().then((token) => {
+                                                    return { user, token };
+                                                });
+                                            })
+                                            .then(({ user, token }) => {
+                                                // Prepare data for Firebase database
+                                                const userData = {
+                                                    userId: user.uid,
+                                                    token: token,
+                                                    name: fullName,
+                                                    email: email,
+                                                    phone: phone,
+                                                    businessName: businessName,
+                                                    businessCategory: businessCategory,
+                                                    location: {
+                                                        country: country,
+                                                        city: city,
+                                                        district: district
+                                                    },
+                                                    startedAt: startedAt,
+                                                    expDate: expDate,
+                                                    subType: planName,
+                                                    planId: plan,
+                                                    role: "client",
+                                                    status: "active",
+                                                    createdAt: new Date().toISOString(),
+                                                    lastLogin: new Date().toISOString()
+                                                };
+
+                                                // Save to Firebase Realtime Database at /clients/{uid}
+                                                return database.ref(`/clients/${user.uid}`).set(userData).then(() => {
+                                                    return { user, token, userData };
+                                                });
+                                            })
+                                            .then(({ user, token, userData }) => {
+                                                // Create store structure (similar to your guide)
+                                                const storeData = {
+                                                    Matager: {
+                                                        Amount: 0,
+                                                        count: 0,
+                                                        "matager-cut": 0
+                                                    }
+                                                };
+
+                                                // Save store structure
+                                                return database.ref(`/Stores/${user.uid}`).set(storeData).then(() => {
+                                                    return { user, token, userData };
+                                                });
+                                            })
+                                            .then(({ user, token, userData }) => {
+                                                // Add store-info (similar to your guide)
+                                                const storeInfo = {
+                                                    Domain: "", // You can add domain logic if needed
+                                                    name: fullName,
+                                                    email: email,
+                                                    "phone-number": phone,
+                                                    plan: planName,
+                                                    "store-name": businessName,
+                                                    "store-details": businessCategory,
+                                                    "starting-date": startedAt,
+                                                    "ending-date": expDate,
+                                                    token: token
+                                                };
+
+                                                return database.ref(`/clients_stores/${user.uid}/store-info`).set(storeInfo).then(() => {
+                                                    return { user, token, userData };
+                                                });
+                                            })
+                                            .then(({ user, token, userData }) => {
+                                                // Send data to backend API
+                                                const apiData = {
+                                                    userId: user.uid,
+                                                    token: token,
+                                                    name: fullName,
+                                                    startedAt: startedAt,
+                                                    expDate: expDate,
+                                                    subType: planName,
+                                                    role: "client",
+                                                    email: email
+                                                };
+
+
+                                            })
+                                            .then((user) => {
+                                                // Show success message
+                                                document.getElementById('success-message').style.display = 'block';
+                                                document.getElementById('login-form').style.display = 'none';
+
+                                                console.log('Account created successfully:', {
+                                                    uid: user.uid,
+                                                    email: user.email,
+                                                    name: fullName,
+                                                    plan: planName
+                                                });
+
+                                                // Redirect to dashboard after 3 seconds
+                                                setTimeout(() => {
+                                                    window.location.href = `https://www.matager/dashboard/${user.uid}`;
+                                                }, 3000);
+                                            })
+                                            .catch((error) => {
+                                                console.error('Error creating account:', error);
+
+                                                // Handle specific Firebase errors
+                                                let errorMessage = 'Account creation failed. ';
+
+                                                switch (error.code) {
+                                                    case 'auth/email-already-in-use':
+                                                        errorMessage = 'This email is already registered.';
+                                                        break;
+                                                    case 'auth/invalid-email':
+                                                        errorMessage = 'Invalid email address.';
+                                                        break;
+                                                    case 'auth/operation-not-allowed':
+                                                        errorMessage = 'Email/password accounts are not enabled.';
+                                                        break;
+                                                    case 'auth/weak-password':
+                                                        errorMessage = 'Password is too weak.';
+                                                        break;
+                                                    case 'auth/network-request-failed':
+                                                        errorMessage = 'Network error. Please check your connection.';
+                                                        break;
+                                                    default:
+                                                        errorMessage = error.message || 'Unknown error occurred.';
+                                                }
+
+                                                alert(errorMessage);
+                                            })
+                                            .finally(() => {
+                                                // Reset button
+                                                submitBtn.innerHTML = originalText;
+                                                submitBtn.disabled = false;
+                                            });
+
+                                    } catch (error) {
+                                        console.error('Signup error:', error);
+                                        alert('Signup failed: ' + error.message);
+                                    }
+                                }
+
+                                // Handle user login
+                                async function handleLogin() {
+                                    try {
+                                        const email = document.getElementById('email').value.trim();
+                                        const password = document.getElementById('password').value;
+
+                                        // Validate login fields
+                                        if (!email || !password) {
+                                            alert('Please enter both email and password');
+                                            return;
+                                        }
+
+                                        // Show loading state
+                                        const submitBtn = document.getElementById('submit-btn');
+                                        const originalText = submitBtn.innerHTML;
+                                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+                                        submitBtn.disabled = true;
+
+                                        // Sign in with Firebase Auth
+                                        auth.signInWithEmailAndPassword(email, password)
+                                            .then((userCredential) => {
+                                                const user = userCredential.user;
+
+                                                // Get user data from database
+                                                return database.ref(`/clients/${user.uid}`).once('value').then((snapshot) => {
+                                                    const userData = snapshot.val();
+
+                                                    if (!userData) {
+                                                        throw new Error('User data not found in database');
+                                                    }
+
+                                                    // Check user role
+                                                    if (userData.role !== 'client') {
+                                                        throw new Error('Access denied. This is not a client account.');
+                                                    }
+
+                                                    // Update last login time
+                                                    return database.ref(`/clients/${user.uid}`).update({
+                                                        lastLogin: new Date().toISOString()
+                                                    }).then(() => {
+                                                        return { user, userData };
+                                                    });
+                                                });
+                                            })
+                                            .then(({ user, userData }) => {
+                                                // Get new token for backend API
+                                                return user.getIdToken().then((token) => {
+                                                    return { user, userData, token };
+                                                });
+                                            })
+                                            .then(({ user, userData, token }) => {
+                                                // Send updated token to backend API
+                                                const apiData = {
+                                                    userId: user.uid,
+                                                    token: token,
+                                                    name: userData.name,
+                                                    startedAt: userData.startedAt,
+                                                    expDate: userData.expDate,
+                                                    subType: userData.subType,
+                                                    role: userData.role,
+                                                    email: user.email
+                                                };
+
+                                                return fetch('https://mataager-services-production.up.railway.app/api/v1/auth/create-token', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'Content-Type': 'application/json',
+                                                        'Accept': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(apiData)
+                                                }).then(response => {
+                                                    if (!response.ok) {
+                                                        console.warn('Backend API update failed, but login successful');
+                                                    }
+                                                    return response.json();
+                                                }).then(() => {
+                                                    return user;
+                                                });
+                                            })
+                                            .then((user) => {
+                                                // Redirect to dashboard
+                                                window.location.href = `https://www.matager/dashboard/${user.uid}`;
+                                            })
+                                            .catch((error) => {
+                                                console.error('Login error:', error);
+
+                                                let errorMessage = 'Login failed. ';
+
+                                                switch (error.code) {
+                                                    case 'auth/invalid-email':
+                                                        errorMessage = 'Invalid email address.';
+                                                        break;
+                                                    case 'auth/user-disabled':
+                                                        errorMessage = 'This account has been disabled.';
+                                                        break;
+                                                    case 'auth/user-not-found':
+                                                        errorMessage = 'No account found with this email.';
+                                                        break;
+                                                    case 'auth/wrong-password':
+                                                        errorMessage = 'Incorrect password.';
+                                                        break;
+                                                    case 'auth/too-many-requests':
+                                                        errorMessage = 'Too many failed login attempts. Please try again later.';
+                                                        break;
+                                                    case 'auth/network-request-failed':
+                                                        errorMessage = 'Network error. Please check your connection.';
+                                                        break;
+                                                    default:
+                                                        errorMessage = error.message || 'Unknown error occurred.';
+                                                }
+
+                                                alert(errorMessage);
+                                            })
+                                            .finally(() => {
+                                                // Reset button
+                                                submitBtn.innerHTML = originalText;
+                                                submitBtn.disabled = false;
+                                            });
+
+                                    } catch (error) {
+                                        console.error('Login error:', error);
+                                        alert('Login failed: ' + error.message);
+                                    }
+                                }
+
+                                // Add CSS for loading spinner
+                                const style = document.createElement('style');
+                                style.textContent = `
+    .fa-spinner {
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+`;
+                                document.head.appendChild(style);
+
+                                //
+                                // Helper function to get all form values
+                                function getAllFormValues() {
+                                    const form = document.getElementById('login-form');
+                                    const formData = new FormData(form);
+                                    const values = {};
+
+                                    formData.forEach((value, key) => {
+                                        if (values[key]) {
+                                            if (Array.isArray(values[key])) {
+                                                values[key].push(value);
+                                            } else {
+                                                values[key] = [values[key], value];
+                                            }
+                                        } else {
+                                            values[key] = value;
+                                        }
+                                    });
+
+                                    return values;
+                                }
+
+                                // Helper function to validate email
+                                function isValidEmail(email) {
+                                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                    return emailRegex.test(email);
+                                }
+
+                                // Helper function to validate phone number (basic international format)
+                                function isValidPhone(phone) {
+                                    const phoneRegex = /^[\+\d\s\-\(\)]+$/;
+                                    return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 8;
+                                }
+
+                                // Helper function to format card number for display
+                                function formatCardNumber(cardNumber) {
+                                    const cleaned = cardNumber.replace(/\D/g, '');
+                                    const groups = cleaned.match(/.{1,4}/g);
+                                    return groups ? groups.join(' ') : '';
+                                }
+
+                                // Helper function to mask sensitive data for logging
+                                function maskSensitiveData(data) {
+                                    const masked = { ...data };
+
+                                    if (masked.password) {
+                                        masked.password = '********';
+                                    }
+
+                                    if (masked.cardDetails) {
+                                        masked.cardDetails = {
+                                            ...masked.cardDetails,
+                                            number: masked.cardDetails.number ? '**** **** **** ' + masked.cardDetails.number.slice(-4) : '',
+                                            cvc: masked.cardDetails.cvc ? '***' : ''
+                                        };
+                                    }
+
+                                    return masked;
+                                }
+                                // Credit card input formatting
+                                document.getElementById('card-number').addEventListener('input', function (e) {
+                                    let value = e.target.value.replace(/\D/g, '');
+                                    value = value.replace(/(.{4})/g, '$1 ').trim();
+                                    e.target.value = value.substring(0, 19);
+                                });
+
+                                document.getElementById('card-expiry').addEventListener('input', function (e) {
+                                    let value = e.target.value.replace(/\D/g, '');
+                                    if (value.length >= 2) {
+                                        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                                    }
+                                    e.target.value = value.substring(0, 5);
+                                });
+
+                                // Initialize
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // Show credit card details by default
+                                    document.getElementById('credit-card-details').style.display = 'flex';
+
+                                    // Set up switch between login/signup modes
+                                    const switchLink = document.getElementById('switch-to-signup');
+                                    if (switchLink) {
+                                        switchLink.addEventListener('click', function (e) {
+                                            e.preventDefault();
+                                            // This would be your logic to switch between login and signup views
+                                            // alert('Switch to signup mode - this would show all additional fields');
+                                        });
+                                    }
+                                });
+                            </script>
+                        </section>
                     </div>
                 </div>
-                <section class="login-container" id="login-container">
-                    <p class="login-subtitle" id="form-title">Sign in to continue</p>
-
-                    <!-- Progress Indicator -->
-                    <div class="progress-container" id="progress-container">
-                        <div class="progress-header">
-                            <span class="progress-title">Account Setup Progress</span>
-                            <span class="progress-percentage" id="progress-percentage">0%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progress-fill"></div>
-                        </div>
-                    </div>
-
-                    <!-- Success Message (Hidden by default) -->
-                    <div class="success-message" id="success-message">
-                        <div class="success-icon">
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <h3 class="success-title">Account Created Successfully!</h3>
-                        <p class="success-text">Your Matager account has been created. Check your email to verify your
-                            account.
-                        </p>
-                        <button class="btn-primary" id="back-to-login">Back to Login</button>
-                    </div>
-
-                    <form class="login-form" id="login-form">
-                        <!-- Base form fields (always visible) -->
-                        <div class="form-group">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" id="email" class="form-input" placeholder="you@example.com" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="form-label">Password</label>
-                            <div class="password-container">
-                                <input type="password" id="password" class="form-input"
-                                    placeholder="Enter your password" required>
-                            </div>
-                        </div>
-
-                        <!-- Additional signup fields (hidden by default) -->
-                        <div class="additional-field" id="full-name-field">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="first-name" class="form-label">First Name</label>
-                                    <input type="text" id="first-name" class="form-input" placeholder="John">
-                                </div>
-                                <div class="form-group">
-                                    <label for="last-name" class="form-label">Last Name</label>
-                                    <input type="text" id="last-name" class="form-input" placeholder="Doe">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="additional-field" id="business-field">
-                            <div class="form-group">
-                                <label for="business-name" class="form-label">Business Name</label>
-                                <input type="text" id="business-name" class="form-input" placeholder="My Online Store">
-                            </div>
-                            <div class="form-group">
-                                <label for="business-type" class="form-label">Business Type</label>
-                                <select id="business-type" class="form-input">
-                                    <option value="">Select business type</option>
-                                    <option value="retail">Retail</option>
-                                    <option value="wholesale">Wholesale</option>
-                                    <option value="dropshipping">Dropshipping</option>
-                                    <option value="digital">Digital Products</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="additional-field" id="phone-field">
-                            <div class="form-group">
-                                <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" id="phone" class="form-input" placeholder="(+20) 1010-773-587">
-                            </div>
-                        </div>
-
-                        <!-- Plan Selection Field -->
-                        <div class="additional-field" id="plan-field">
-                            <div class="form-group">
-                                <label for="plan-type" class="form-label">Select Your Plan</label>
-                                <select id="plan-type" class="form-input plan-select" required>
-                                    <option value="">Choose a plan</option>
-                                    <option value="free" data-price="0" data-period="month">Free Trial - $0/month (14
-                                        days)</option>
-                                    <option value="basic" data-price="29" data-period="month">Basic - $29/month</option>
-                                    <option value="pro" data-price="79" data-period="month">Professional - $79/month
-                                    </option>
-                                    <option value="business" data-price="199" data-period="month">Business - $199/month
-                                    </option>
-                                    <option value="annual-basic" data-price="299" data-period="year">Basic Annual -
-                                        $299/year (Save $49)</option>
-                                    <option value="annual-pro" data-price="790" data-period="year">Pro Annual -
-                                        $790/year (Save $158)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Promo Code Field -->
-                        <div class="additional-field" id="promo-field">
-                            <div class="form-group">
-                                <label for="promo-code" class="form-label">Promo Code (Optional)</label>
-                                <div class="promo-container">
-                                    <input type="text" id="promo-code" class="form-input"
-                                        placeholder="Enter promo code">
-                                    <button type="button" class="promo-btn" id="apply-promo">Apply</button>
-                                </div>
-                                <div class="promo-message" id="promo-message"></div>
-                            </div>
-                        </div>
-
-                        <!-- Payment Summary -->
-                        <div class="additional-field" id="payment-summary-field">
-                            <div class="payment-summary">
-                                <h4>Order Summary</h4>
-                                <div class="summary-row">
-                                    <span>Plan:</span>
-                                    <span id="selected-plan">None selected</span>
-                                </div>
-                                <div class="summary-row">
-                                    <span>Plan Price:</span>
-                                    <span id="plan-price">$0.00</span>
-                                </div>
-                                <div class="summary-row">
-                                    <span>Discount:</span>
-                                    <span id="discount-amount">$0.00</span>
-                                </div>
-                                <div class="summary-row total">
-                                    <span>Total:</span>
-                                    <span id="total-price">$0.00</span>
-                                </div>
-                                <div class="summary-row">
-                                    <span>Billing Period:</span>
-                                    <span id="billing-period">Monthly</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Payment Method Selection -->
-                        <div class="additional-field" id="payment-method-field">
-                            <div class="form-group">
-                                <label class="form-label">Payment Method</label>
-                                <div class="payment-methods">
-                                    <label class="payment-option">
-                                        <input type="radio" name="payment-method" value="credit-card" checked>
-                                        <div class="payment-option-content">
-                                            <i class="fa-solid fa-credit-card"></i>
-                                            <span>Card</span>
-                                        </div>
-                                    </label>
-                                    <label class="payment-option">
-                                        <input type="radio" name="payment-method" value="mobile-wallet">
-                                        <div class="payment-option-content">
-                                            <i class="fa-solid fa-mobile-screen-button"></i>
-                                            <span>Mobile Wallet</span>
-                                        </div>
-                                    </label>
-                                    <label class="payment-option">
-                                        <input type="radio" name="payment-method" value="paypal">
-                                        <div class="payment-option-content">
-                                            <i class="fa-brands fa-paypal"></i>
-                                            <span>PayPal</span>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Credit Card Details (shown when credit card is selected) -->
-                            <div class="payment-details" id="credit-card-details">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="card-number" class="form-label">Card Number</label>
-                                        <input type="text" id="card-number" class="form-input"
-                                            placeholder="1234 5678 9012 3456" maxlength="19">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="card-expiry" class="form-label">Expiry Date</label>
-                                        <input type="text" id="card-expiry" class="form-input" placeholder="MM/YY"
-                                            maxlength="5">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="card-cvc" class="form-label">CVC</label>
-                                        <input type="text" id="card-cvc" class="form-input" placeholder="123"
-                                            maxlength="4">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="card-name" class="form-label">Name on Card</label>
-                                    <input type="text" id="card-name" class="form-input" placeholder="John Doe">
-                                </div>
-                            </div>
-
-                            <!-- Mobile Wallet Instructions (shown when mobile wallet is selected) -->
-                            <div class="payment-details" id="mobile-wallet-details" style="display: none;">
-                                <div class="wallet-instructions">
-                                    <p>After clicking "Sign Up", you will be redirected to complete your payment
-                                        through:</p>
-                                    <div class="wallet-options">
-                                        <div class="wallet-option">
-                                            <i class="fa-brands fa-apple"></i>
-                                            <span>Apple Pay</span>
-                                        </div>
-                                        <div class="wallet-option">
-                                            <i class="fa-brands fa-google"></i>
-                                            <span>Google Pay</span>
-                                        </div>
-                                        <div class="wallet-option">
-                                            <i class="fa-solid fa-wallet"></i>
-                                            <span>Other Wallets</span>
-                                        </div>
-                                    </div>
-                                    <p class="note">Make sure your mobile wallet is set up and ready for payment.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="additional-field" id="terms-field">
-                            <div class="terms-container">
-                                <input type="checkbox" id="terms" class="remember-checkbox" required>
-                                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a
-                                        href="#">Privacy Policy</a></label>
-                            </div>
-                            <div class="terms-container">
-                                <input type="checkbox" id="marketing" class="remember-checkbox">
-                                <label for="marketing">Send me marketing emails and updates</label>
-                            </div>
-                            <div class="terms-container">
-                                <input type="checkbox" id="auto-renew" class="remember-checkbox" checked>
-                                <label for="auto-renew">Auto-renew my subscription</label>
-                            </div>
-                        </div>
-
-                        <div class="form-options" id="login-options">
-                            <div class="remember-me">
-                                <input type="checkbox" id="remember" class="remember-checkbox">
-                                <label for="remember">Remember me</label>
-                            </div>
-                            <a href="#" class="forgot-link">Forgot password?</a>
-                        </div>
-
-                        <button type="submit" class="login-btn" id="submit-btn">
-                            Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                        </button>
-
-                        <div class="divider" id="divider">
-                            <div class="divider-line"></div>
-                            <div class="divider-text">Or</div>
-                            <div class="divider-line"></div>
-                        </div>
-
-                        <div class="social-login">
-                            <button type="button" class="social-btn" id="social-btn">
-                                Get Started
-                            </button>
-                        </div>
-
-                        <div class="signup-link" id="signup-link">
-                            Don't have an account? <a href="#" id="switch-to-signup">Sign up for free</a>
-                        </div>
-                    </form>
-
-
-
-                    <script>
-                        // Plan features mapping
-                        const planFeatures = {
-                            'free': ['Up to 10 products', 'Basic analytics', '14-day trial', 'Email support'],
-                            'basic': ['Up to 100 products', 'Advanced analytics', 'Custom domain', '24/7 chat support'],
-                            'pro': ['Unlimited products', 'Advanced analytics + reports', 'Custom domain + SSL', 'Priority support'],
-                            'business': ['Unlimited products', 'White-label solution', 'API access', 'Dedicated account manager'],
-                            'annual-basic': ['All Basic features', '2 months free', 'Annual billing', 'Priority updates'],
-                            'annual-pro': ['All Pro features', '2 months free', 'Annual billing', 'Priority updates']
-                        };
-
-                        // Promo codes database
-                        const promoCodes = {
-                            'WELCOME20': { type: 'percentage', value: 20, valid: true },
-                            'SAVE50': { type: 'fixed', value: 50, valid: true },
-                            'SUMMER25': { type: 'percentage', value: 25, valid: true },
-                            'FIRSTYEAR': { type: 'percentage', value: 30, valid: true }
-                        };
-
-                        let appliedPromo = null;
-                        let currentPlanPrice = 0;
-                        let discountAmount = 0;
-
-                        // Plan selection change handler
-                        document.getElementById('plan-type').addEventListener('change', function () {
-                            const selectedOption = this.options[this.selectedIndex];
-                            const planId = selectedOption.value;
-                            const planPrice = parseFloat(selectedOption.dataset.price) || 0;
-                            const period = selectedOption.dataset.period || 'month';
-                            const planName = selectedOption.text.split(' - ')[0];
-
-                            currentPlanPrice = planPrice;
-
-                            // Update UI
-                            document.getElementById('selected-plan').textContent = planName;
-                            document.getElementById('plan-price').textContent = formatPrice(planPrice, period);
-                            document.getElementById('billing-period').textContent = period === 'month' ? 'Monthly' : 'Yearly';
-
-                            // Show/hide plan details
-                            // const planDetails = document.getElementById('plan-details');
-                            // if (planId && planFeatures[planId]) {
-                            //     planDetails.style.display = 'block';
-                            //     const featuresList = document.getElementById('plan-features-list');
-                            //     featuresList.innerHTML = planFeatures[planId].map(feature => `<li>${feature}</li>`).join('');
-                            // } else {
-                            //     planDetails.style.display = 'none';
-                            // }
-
-                            // Recalculate total
-                            calculateTotal();
-                        });
-
-                        // Apply promo code
-                        document.getElementById('apply-promo').addEventListener('click', function () {
-                            const promoCode = document.getElementById('promo-code').value.trim().toUpperCase();
-                            const messageElement = document.getElementById('promo-message');
-
-                            if (!promoCode) {
-                                messageElement.textContent = 'Please enter a promo code';
-                                messageElement.className = 'promo-message error';
-                                return;
-                            }
-
-                            if (promoCodes[promoCode] && promoCodes[promoCode].valid) {
-                                appliedPromo = promoCodes[promoCode];
-                                messageElement.textContent = `Promo code applied successfully! ${appliedPromo.type === 'percentage' ? appliedPromo.value + '%' : '$' + appliedPromo.value} discount`;
-                                messageElement.className = 'promo-message success';
-                                calculateTotal();
-                            } else {
-                                messageElement.textContent = 'Invalid or expired promo code';
-                                messageElement.className = 'promo-message error';
-                                appliedPromo = null;
-                                calculateTotal();
-                            }
-                        });
-
-                        // Payment method change handler
-                        document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
-                            radio.addEventListener('change', function () {
-                                // Hide all payment details
-                                document.querySelectorAll('.payment-details').forEach(detail => {
-                                    detail.style.display = 'none';
-                                });
-
-                                // Show selected payment method details
-                                if (this.value === 'credit-card') {
-                                    document.getElementById('credit-card-details').style.display = 'block';
-                                } else if (this.value === 'mobile-wallet') {
-                                    document.getElementById('mobile-wallet-details').style.display = 'block';
-                                }
-                            });
-                        });
-
-                        // Calculate total price
-                        function calculateTotal() {
-                            const planPrice = currentPlanPrice;
-
-                            // Apply discount
-                            let discount = 0;
-                            if (appliedPromo) {
-                                if (appliedPromo.type === 'percentage') {
-                                    discount = planPrice * (appliedPromo.value / 100);
-                                } else {
-                                    discount = appliedPromo.value;
-                                }
-
-                                // Ensure discount doesn't exceed plan price
-                                discount = Math.min(discount, planPrice);
-                            }
-
-                            discountAmount = discount;
-                            const total = planPrice - discount;
-
-                            // Update UI
-                            document.getElementById('discount-amount').textContent = formatPrice(discount);
-                            document.getElementById('total-price').textContent = formatPrice(total);
-
-                            // Update submit button text
-                            const submitBtn = document.getElementById('submit-btn');
-                            if (total > 0) {
-                                submitBtn.innerHTML = `Pay ${formatPrice(total)} <i class="fa-solid fa-lock"></i>`;
-                            } else {
-                                submitBtn.innerHTML = 'Sign Up Free <i class="fa-solid fa-arrow-right-to-bracket"></i>';
-                            }
-                        }
-
-                        // Format price display
-                        function formatPrice(amount, period = '') {
-                            if (amount === 0) return 'Free';
-
-                            if (period === 'year') {
-                                return `$${amount.toFixed(0)}/year`;
-                            } else if (period === 'month') {
-                                return `$${amount.toFixed(2)}/month`;
-                            }
-
-                            return `$${amount.toFixed(2)}`;
-                        }
-
-                        // Form submission
-                        document.getElementById('login-form').addEventListener('submit', function (e) {
-                            e.preventDefault();
-
-                            // Get form data
-                            const formData = {
-                                email: document.getElementById('email').value,
-                                password: document.getElementById('password').value,
-                                plan: document.getElementById('plan-type').value,
-                                planName: document.getElementById('plan-type').options[document.getElementById('plan-type').selectedIndex].text.split(' - ')[0],
-                                price: currentPlanPrice,
-                                discount: discountAmount,
-                                total: currentPlanPrice - discountAmount,
-                                paymentMethod: document.querySelector('input[name="payment-method"]:checked').value,
-                                promoCode: appliedPromo ? document.getElementById('promo-code').value : null,
-                                termsAccepted: document.getElementById('terms').checked,
-                                autoRenew: document.getElementById('auto-renew').checked
-                            };
-
-                            // Validate payment details if credit card selected
-                            const paymentMethod = formData.paymentMethod;
-                            if (paymentMethod === 'credit-card' && formData.total > 0) {
-                                const cardNumber = document.getElementById('card-number').value;
-                                const cardExpiry = document.getElementById('card-expiry').value;
-                                const cardCvc = document.getElementById('card-cvc').value;
-
-                                if (!cardNumber || !cardExpiry || !cardCvc) {
-                                    alert('Please complete your credit card details');
-                                    return;
-                                }
-                            }
-
-                            // Here you would typically send this data to your server
-                            console.log('Form submitted:', formData);
-                            alert('Form submitted successfully! (Check console for details)');
-
-                            // In a real application, you would:
-                            // 1. Send data to your backend
-                            // 2. Process payment through a payment gateway
-                            // 3. Redirect to success page or dashboard
-                        });
-
-                        // Credit card input formatting
-                        document.getElementById('card-number').addEventListener('input', function (e) {
-                            let value = e.target.value.replace(/\D/g, '');
-                            value = value.replace(/(.{4})/g, '$1 ').trim();
-                            e.target.value = value.substring(0, 19);
-                        });
-
-                        document.getElementById('card-expiry').addEventListener('input', function (e) {
-                            let value = e.target.value.replace(/\D/g, '');
-                            if (value.length >= 2) {
-                                value = value.substring(0, 2) + '/' + value.substring(2, 4);
-                            }
-                            e.target.value = value.substring(0, 5);
-                        });
-
-                        // Initialize
-                        document.addEventListener('DOMContentLoaded', function () {
-                            // Show credit card details by default
-                            document.getElementById('credit-card-details').style.display = 'block';
-
-                            // Set up switch between login/signup modes
-                            const switchLink = document.getElementById('switch-to-signup');
-                            if (switchLink) {
-                                switchLink.addEventListener('click', function (e) {
-                                    e.preventDefault();
-                                    // This would be your logic to switch between login and signup views
-                                    alert('Switch to signup mode - this would show all additional fields');
-                                });
-                            }
-                        });
-                    </script>
-                </section>
             </div>
 
         </section>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Get DOM elements
-                const getStartedBtn = document.getElementById('get-started-btn');
-                const loginContainer = document.getElementById('login-container');
-                const loginForm = document.getElementById('login-form');
-                const formTitle = document.getElementById('form-title');
-                const progressContainer = document.getElementById('progress-container');
-                const progressFill = document.getElementById('progress-fill');
-                const progressPercentage = document.getElementById('progress-percentage');
-                const submitBtn = document.getElementById('submit-btn');
-                const socialBtn = document.getElementById('social-btn');
-                const signupLink = document.getElementById('signup-link');
-                const switchToSignup = document.getElementById('switch-to-signup');
-                // const togglePasswordBtn = document.getElementById('toggle-password');
-                const passwordInput = document.getElementById('password');
-                const successMessage = document.getElementById('success-message');
-                const backToLoginBtn = document.getElementById('back-to-login');
-                const loginOptions = document.getElementById('login-options');
-                const divider = document.getElementById('divider');
-
-                // Additional form fields
-                const fullNameField = document.getElementById('full-name-field');
-                const businessField = document.getElementById('business-field');
-                const phoneField = document.getElementById('phone-field');
-                const planField = document.getElementById('plan-field');
-                const paymentSummaryField = document.getElementById('payment-summary-field');
-                const paymentMethodField = document.getElementById('payment-method-field');
-                const promoField = document.getElementById('promo-field');
-                const termsField = document.getElementById('terms-field');
-
-                // State variables
-                let isSignupMode = false;
-                let currentStep = 0;
-                const totalSteps = 5; // email, password, name, business, phone/terms
-
-                // Toggle password visibility
-                // togglePasswordBtn.addEventListener('click', function () {
-                //     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                //     passwordInput.setAttribute('type', type);
-                //     this.innerHTML = type === 'password' ? '<i class="far fa-eye"></i>' : '<i class="far fa-eye-slash"></i>';
-                // });
-
-                // Get Started button click - expand form to signup
-                getStartedBtn.addEventListener('click', expandToSignup);
-                socialBtn.addEventListener('click', expandToSignup);
-                switchToSignup.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    expandToSignup();
-                });
-
-                // Function to expand form to signup mode
-                function expandToSignup() {
-                    if (isSignupMode) return;
-
-                    isSignupMode = true;
-
-                    // Change UI to signup mode
-                    formTitle.textContent = 'Create Your Account';
-                    submitBtn.innerHTML = 'Pay & Submit <i class="fas fa-user-plus"></i>';
-
-                    signupLink.innerHTML = 'Already have an account? <a href="#" id="switch-to-login">Sign in</a>';
-
-                    // Add event listener for the new "Sign in" link
-                    document.getElementById('switch-to-login').addEventListener('click', function (e) {
-                        e.preventDefault();
-                        collapseToLogin();
-                    });
-
-                    // Show additional fields
-                    fullNameField.classList.add('show');
-                    businessField.classList.add('show');
-                    phoneField.classList.add('show');
-                    planField.classList.add('show');
-                    paymentSummaryField.classList.add('show');
-                    paymentMethodField.classList.add('show');
-                    promoField.classList.add('show');
-                    termsField.classList.add('show');
-
-                    // Hide login-only elements
-                    loginOptions.style.display = 'none';
-                    divider.style.display = 'none';
-
-                    // Show progress indicator
-                    progressContainer.classList.add('show');
-
-                    // Add scrollable class to form
-                    loginForm.classList.add('expanded-form');
-
-                    // Update progress
-                    updateProgress();
-
-                    // Focus on first field
-                    document.getElementById('email').focus();
-                }
-
-                // Function to collapse form back to login mode
-                function collapseToLogin() {
-                    isSignupMode = false;
-                    currentStep = 0;
-
-                    // Reset UI to login mode
-                    formTitle.textContent = 'Sign in to continue';
-                    submitBtn.innerHTML = 'Sign In <i class="fa-solid fa-arrow-right-to-bracket"></i>';
-                    signupLink.innerHTML = 'Don\'t have an account? <a href="#" id="switch-to-signup">Sign up for free</a>';
-
-                    // Add event listener for the new "Sign up" link
-                    document.getElementById('switch-to-signup').addEventListener('click', function (e) {
-                        e.preventDefault();
-                        expandToSignup();
-                    });
-
-                    // Hide additional fields
-                    fullNameField.classList.remove('show');
-                    businessField.classList.remove('show');
-                    phoneField.classList.remove('show');
-                    planField.classList.remove('show');
-                    paymentSummaryField.classList.remove('show');
-                    paymentMethodField.classList.remove('show');
-                    promoField.classList.remove('show');
-                    termsField.classList.remove('show');
-
-                    // Show login-only elements
-                    loginOptions.style.display = 'flex';
-                    divider.style.display = 'flex';
-
-                    // Hide progress indicator
-                    progressContainer.classList.remove('show');
-
-                    // Remove scrollable class from form
-                    loginForm.classList.remove('expanded-form');
-
-                    // Reset progress bar
-                    progressFill.style.width = '0%';
-                    progressPercentage.textContent = '0%';
-                }
-
-                // Update progress indicator
-                function updateProgress() {
-                    // Calculate progress based on filled fields
-                    const fields = [
-                        document.getElementById('email').value.trim(),
-                        document.getElementById('password').value.trim(),
-                        document.getElementById('first-name').value.trim(),
-                        document.getElementById('business-name').value.trim(),
-                        document.getElementById('phone').value.trim() && document.getElementById('terms').checked
-                    ];
-
-                    const filledFields = fields.filter(Boolean).length;
-                    const progress = Math.min((filledFields / totalSteps) * 100, 100);
-
-                    // Update progress bar
-                    progressFill.style.width = `${progress}%`;
-                    progressPercentage.textContent = `${Math.round(progress)}%`;
-
-                    // Store current step for progress calculation
-                    currentStep = filledFields;
-                }
-
-                // Add input event listeners to update progress
-                const allInputs = loginForm.querySelectorAll('input, select');
-                allInputs.forEach(input => {
-                    input.addEventListener('input', updateProgress);
-                    input.addEventListener('change', updateProgress);
-                });
-
-                // Form submission
-                loginForm.addEventListener('submit', function (e) {
-                    e.preventDefault();
-
-                    if (isSignupMode) {
-                        // Signup form submission
-                        const email = document.getElementById('email').value;
-                        const firstName = document.getElementById('first-name').value;
-
-                        // Show success message
-                        loginForm.style.display = 'none';
-                        successMessage.classList.add('show');
-                        progressContainer.classList.remove('show');
-
-                        // Update success message with user's name
-                        document.querySelector('.success-title').textContent = `Welcome, ${firstName}!`;
-
-                    } else {
-                        // Login form submission
-                        const email = document.getElementById('email').value;
-                        alert(`Logging in with email: ${email}\n(In a real app, this would authenticate with a backend)`);
-                        // Here you would typically send the data to your backend
-                    }
-                });
-
-                // Back to login button
-                backToLoginBtn.addEventListener('click', function () {
-                    successMessage.classList.remove('show');
-                    loginForm.style.display = 'flex';
-                    collapseToLogin();
-
-                    // Clear form
-                    loginForm.reset();
-                    updateProgress();
-                });
-
-                // Demo functionality for "View Demo" button
-                document.querySelector('.btn-secondary').addEventListener('click', function () {
-                    alert('Demo mode activated! This would show a preview of the Matager dashboard.');
-                });
-
-                // Demo functionality for "Upgrade to Pro" button
-                document.querySelector('.waitlist-btn').addEventListener('click', function () {
-                    alert('Redirecting to Pro upgrade page...');
-                });
-
-                // Initial setup
-                updateProgress();
-            });
-        </script>
 
         <section id="App" class="section App-section active">
-            <div class="section-content">
-                <div class="left-div">
-                    <div class="demo-text">
-                        <h2 class="section-title">Manage Everything <span class="highlight-text">On The Go</span></h2>
-                        <p class="hero-subtitle">Unlock the full power of our platform. Download our app for effortless
-                            management, real-time alerts, and smooth, on-the-go access. Simplicity and control, wherever
-                            you are.</p>
+            <div class="glassycardlight">
+                <div class="section-content">
+                    <div class="left-div">
+                        <div class="demo-text">
+                            <h2 class="section-title">Manage Everything <span class="highlight-text">On The Go</span>
+                            </h2>
+                            <p class="hero-subtitle">Unlock the full power of our platform. Download our app for
+                                effortless
+                                management, real-time alerts, and smooth, on-the-go access. Simplicity and control,
+                                wherever
+                                you are.</p>
 
 
-                    </div>
-                </div>
-
-                <div class="right-div">
-
-
-                    <!-- Download Buttons -->
-                    <div class="download-section">
-                        <h3 class="download-title">Download Now</h3>
-                        <p class="download-subtitle">Available on all platforms</p>
-
-                        <div class="download-buttons">
-                            <a href="#" class="social-btn">
-                                <div class="store-icon">
-                                    <i class="fab fa-apple"></i>
-                                </div>
-                                <div class="store-text">
-                                    <span class="store-label">Download For</span>
-                                    <span class="store-name">Mac-Os</span>
-                                </div>
-                            </a>
-
-                            <a href="#" class="social-btn">
-                                <div class="store-icon">
-                                    <i class="fab fa-google-play"></i>
-                                </div>
-                                <div class="store-text">
-                                    <span class="store-label">Download For</span>
-                                    <span class="store-name">Windows</span>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="qr-section">
-                            <div class="qr-code">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://matager.com/download"
-                                    alt="Scan to download">
-                            </div>
-                            <div class="qr-text">
-                                <h4>Scan to Download</h4>
-                                <p>Use your phone camera to scan and download instantly</p>
-                            </div>
                         </div>
                     </div>
 
+                    <div class="right-div glassycardlighter">
+
+
+                        <!-- Download Buttons -->
+                        <div class="download-section">
+                            <h3 class="download-title">Download Now</h3>
+                            <p class="download-subtitle">Available on all platforms</p>
+
+                            <div class="download-buttons">
+                                <a href="#" class="social-btn">
+                                    <div class="store-icon">
+                                        <i class="fab fa-apple"></i>
+                                    </div>
+                                    <div class="store-text">
+                                        <span class="store-label">Download For</span>
+                                        <span class="store-name">Mac-Os</span>
+                                    </div>
+                                </a>
+
+                                <a href="#" class="social-btn">
+                                    <div class="store-icon">
+                                        <i class="fab fa-google-play"></i>
+                                    </div>
+                                    <div class="store-text">
+                                        <span class="store-label">Download For</span>
+                                        <span class="store-name">Windows</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="qr-section">
+                                <div class="qr-code">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://matager.com/download"
+                                        alt="Scan to download">
+                                </div>
+                                <div class="qr-text">
+                                    <h4>Scan to Download</h4>
+                                    <p>Use your phone camera to scan and download instantly</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
+
         </section>
 
 
         <!-- Demo Section -->
         <section id="demo" class="section demo-section active">
-            <div class="section-content">
-                <div class="right-div">
-                    <div class="demo-text">
-                        <h2 class="section-title">Get Started in <span class="highlight-text">Minutes</span> </h2>
-                        <p class="hero-subtitle">See how effortless it is. Our system works simply and intuitively. Just
-                            connect your data source using our straightforward tools, and you'll be up and running
-                            before you know it.</p>
+            <div class="glassycardlight">
+                <div class="section-content">
+                    <div class="right-div">
+                        <div class="demo-text">
+                            <h2 class="section-title">Get Started in <span class="highlight-text">Minutes</span> </h2>
+                            <p class="hero-subtitle">See how effortless it is. Our system works simply and intuitively.
+                                Just
+                                connect your data source using our straightforward tools, and you'll be up and running
+                                before you know it.</p>
 
-                        <div class="cta-buttons">
-                            <button class="btn-primary">View Documentation</button>
-                            <button class="btn-secondary">Try Live Demo</button>
+                            <div class="cta-buttons">
+                                <button class="btn-primary">View Documentation</button>
+                                <button class="btn-secondary">Try Live Demo</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="left-div">
-                    <!-- 4 Connected Steps -->
-                    <div class="steps-container">
-                        <!-- Step 1 -->
-                        <div class="step-card">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3 class="step-title">Fill Required Data</h3>
-                                <p class="step-description">Complete your business details and setup preferences in
-                                    our
-                                    intuitive form.</p>
+                    <div class="left-div">
+                        <!-- 4 Connected Steps -->
+                        <div class="steps-container">
+                            <!-- Step 1 -->
+                            <div class="step-card">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Fill Required Data</h3>
+                                    <p class="step-description">Complete your business details and setup preferences in
+                                        our
+                                        intuitive form.</p>
+                                </div>
+                                <div class="step-connector"></div>
                             </div>
-                            <div class="step-connector"></div>
-                        </div>
 
-                        <!-- Step 2 -->
-                        <div class="step-card">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3 class="step-title">Pay Subscription Fees</h3>
-                                <p class="step-description">Choose your plan and complete the secure payment
-                                    process.</p>
+                            <!-- Step 2 -->
+                            <div class="step-card">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Pay Subscription Fees</h3>
+                                    <p class="step-description">Choose your plan and complete the secure payment
+                                        process.</p>
+                                </div>
+                                <div class="step-connector"></div>
                             </div>
-                            <div class="step-connector"></div>
-                        </div>
 
-                        <!-- Step 3 -->
-                        <div class="step-card">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3 class="step-title">Get Your Store Ready</h3>
-                                <p class="step-description">We'll redirect you to your personalized dashboard to add
-                                    products.</p>
+                            <!-- Step 3 -->
+                            <div class="step-card">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Get Your Store Ready</h3>
+                                    <p class="step-description">We'll redirect you to your personalized dashboard to add
+                                        products.</p>
+                                </div>
+                                <div class="step-connector"></div>
                             </div>
-                            <div class="step-connector"></div>
-                        </div>
 
-                        <!-- Step 4 -->
-                        <div class="step-card">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h3 class="step-title">Start Receiving Orders</h3>
-                                <p class="step-description">Your store goes live immediately. Manage orders and grow
-                                    your
-                                    business.</p>
+                            <!-- Step 4 -->
+                            <div class="step-card">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Start Receiving Orders</h3>
+                                    <p class="step-description">Your store goes live immediately. Manage orders and grow
+                                        your
+                                        business.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -890,590 +1196,449 @@
 
 
         <section id="Pricing" class="section Pricing-section">
-            <div class="section-content">
-                <!-- Header -->
-                <div class="pricing-header">
-                    <h1 class="section-title">Pricing Plans</h1>
-                    <p class="section-subtitle">Choose the perfect plan for your business needs. All plans include
-                        our core
-                        features with additional benefits at higher tiers.</p>
-                    <div class="view-toggle">
-                        <button class="toggle-btn active" data-view="plans">
-                            <i class="fas fa-layer-group"></i> Plans
-                        </button>
-                        <button class="toggle-btn" data-view="comparison">
-                            <i class="fas fa-chart-bar"></i> Comparison
-                        </button>
-                    </div>
-                </div>
-
-
-
-                <!-- Plans Section -->
-                <div class="plans-section">
-                    <div class="plans-grid">
-                        <!-- Basic Plan -->
-                        <div class="plan-card" data-plan="basic">
-                            <div class="plan-header">
-                                <h3 class="plan-name">The One</h3>
-                                <p class="plan-desc"> For showcasing a single product
-                                </p>
-                                <div class="plan-price">
-                                    <span class="price-amount">80 EGP</span>
-                                    <span class="price-period">/month</span>
-                                </div>
-
-                            </div>
-                            <div class="plan-features">
-                                <ul class="feature-list">
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Up to 3 data sources</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Basic analytics</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>1GB data storage</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Community support</span>
-                                    </li>
-                                    <li class="feature-item disabled">
-                                        <i class="fas fa-times"></i>
-                                        <span>Priority support</span>
-                                    </li>
-                                    <li class="feature-item disabled">
-                                        <i class="fas fa-times"></i>
-                                        <span>Advanced ML models</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="plan-actions">
-                                <button class="btn-plan btn-primary">
-                                    <i class="fas fa-arrow-up"></i> Upgrade Now
-                                </button>
-                            </div>
-                            <button class="expand-btn">
-                                View Details <i class="expand-icon fas fa-chevron-down"></i>
+            <div class="glassycardlight">
+                <div class="section-content">
+                    <!-- Header -->
+                    <div class="demo-text">
+                        <h1 class="section-title">Pricing Plans</h1>
+                        <p class="hero-subtitle">Choose the perfect plan for your business needs. All plans include
+                            our core
+                            features with additional benefits at higher tiers.</p>
+                        <div class="view-toggle">
+                            <button class="toggle-btn active" data-view="plans">
+                                <i class="fas fa-layer-group"></i> Plans
                             </button>
-                        </div>
-
-                        <!-- Starter Plan -->
-                        <div class="plan-card" data-plan="starter">
-                            <div class="plan-header">
-                                <h3 class="plan-name">Fast Cart</h3>
-                                <p class="plan-desc">For Low stock & Fast checkout</p>
-                                <div class="plan-price">
-                                    <span class="price-amount">280 EGP</span>
-                                    <span class="price-period">/month</span>
-                                </div>
-                            </div>
-                            <div class="plan-features">
-                                <ul class="feature-list">
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Up to 10 data sources</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Advanced analytics</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>10GB data storage</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Email support</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Basic ML models</span>
-                                    </li>
-                                    <li class="feature-item disabled">
-                                        <i class="fas fa-times"></i>
-                                        <span>Priority support</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="plan-actions">
-                                <button class="btn-plan btn-primary">
-                                    <i class="fas fa-arrow-up"></i> Upgrade Now
-                                </button>
-                            </div>
-                            <button class="expand-btn">
-                                View Details <i class="expand-icon fas fa-chevron-down"></i>
-                            </button>
-                        </div>
-
-                        <!-- Professional Plan (Most Popular) -->
-                        <div class="plan-card popular" data-plan="professional">
-                            <div class="popular-badge">MOST POPULAR</div>
-                            <div class="plan-header">
-                                <h3 class="plan-name">Fast Cart Plus</h3>
-                                <p class="plan-desc">For medium stock & Fast checkout</p>
-                                <div class="plan-price">
-                                    <span class="price-amount">370 EGP</span>
-                                    <span class="price-period">/month</span>
-                                </div>
-                                <small>Billed annually: $59/month</small>
-                            </div>
-                            <div class="plan-features">
-                                <ul class="feature-list">
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Unlimited data sources</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Advanced analytics</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>100GB data storage</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Priority support (24h)</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Advanced ML models</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Team collaboration</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="plan-actions">
-                                <button class="btn-plan btn-primary">
-                                    <i class="fas fa-bolt"></i> Upgrade to Pro
-                                </button>
-                            </div>
-                            <button class="expand-btn">
-                                View Details <i class="expand-icon fas fa-chevron-down"></i>
-                            </button>
-                        </div>
-
-                        <!-- Business Plan -->
-                        <div class="plan-card" data-plan="business">
-                            <div class="plan-header">
-                                <h3 class="plan-name">Matager Full</h3>
-                                <p class="plan-desc">For larger organizations</p>
-                                <div class="plan-price">
-                                    <span class="price-amount">750 EGP</span>
-                                    <span class="price-period">/month</span>
-                                </div>
-                            </div>
-                            <div class="plan-features">
-                                <ul class="feature-list">
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Unlimited data sources</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Enterprise analytics</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>1TB data storage</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Priority support (2h)</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Custom ML models</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Advanced security</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="plan-actions">
-                                <button class="btn-plan btn-primary">
-                                    <i class="fas fa-building"></i> Upgrade Now
-                                </button>
-                            </div>
-                            <button class="expand-btn">
-                                View Details <i class="expand-icon fas fa-chevron-down"></i>
-                            </button>
-                        </div>
-
-                        <!-- Enterprise Plan -->
-                        <div class="plan-card" data-plan="enterprise">
-                            <div class="plan-header">
-                                <h3 class="plan-name">Matager Full Plus</h3>
-                                <p class="plan-desc">For mission-critical deployments</p>
-                                <div class="plan-price">
-                                    <span class="price-amount">1300 EGP</span>
-                                    <span class="price-period">/month</span>
-                                </div>
-                                <small>+ free Matager POS Subscription</small>
-                            </div>
-                            <div class="plan-features">
-                                <ul class="feature-list">
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Unlimited everything</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Custom analytics suite</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Unlimited storage</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>24/7 dedicated support</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>Custom AI/ML solutions</span>
-                                    </li>
-                                    <li class="feature-item">
-                                        <i class="fas fa-check"></i>
-                                        <span>SLA & custom contracts</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="plan-actions">
-                                <button class="btn-plan btn-primary">
-                                    <i class="fas fa-headset"></i> Contact Sales
-                                </button>
-                            </div>
-                            <button class="expand-btn">
-                                View Details <i class="expand-icon fas fa-chevron-down"></i>
+                            <button class="toggle-btn" data-view="comparison">
+                                <i class="fas fa-chart-bar"></i> Comparison
                             </button>
                         </div>
                     </div>
-                </div>
 
-                <!-- Comparison Section -->
-                <div class="comparison-section">
-                    <div class="comparison-table">
-                        <div class="table-header">
-                            <div class="table-cell">Feature</div>
-                            <div class="table-cell">The One</div>
-                            <div class="table-cell">Fast Cart</div>
-                            <div class="table-cell">Fast Cart Plus</div>
-                            <div class="table-cell">Matager Full</div>
-                            <div class="table-cell">Matager Full Plus</div>
-                        </div>
 
-                        <div class="table-row">
-                            <div class="table-cell feature-cell">Data Sources</div>
-                            <div class="table-cell plan-cell">3</div>
-                            <div class="table-cell plan-cell">10</div>
-                            <div class="table-cell plan-cell">Unlimited</div>
-                            <div class="table-cell plan-cell">Unlimited</div>
-                            <div class="table-cell plan-cell">Unlimited</div>
-                        </div>
 
-                        <div class="table-row">
-                            <div class="table-cell feature-cell">Data Storage</div>
-                            <div class="table-cell plan-cell">1 GB</div>
-                            <div class="table-cell plan-cell">10 GB</div>
-                            <div class="table-cell plan-cell">100 GB</div>
-                            <div class="table-cell plan-cell">1 TB</div>
-                            <div class="table-cell plan-cell">Unlimited</div>
-                        </div>
+                    <!-- Plans Section -->
+                    <div class="plans-section">
+                        <div class="plans-grid">
+                            <!-- Basic Plan -->
+                            <div class="plan-card" data-plan="TheOne">
+                                <div class="plan-header">
+                                    <h3 class="plan-name">The One</h3>
+                                    <p class="plan-desc"> For showcasing a single product
+                                    </p>
+                                    <div class="plan-price">
+                                        <span class="price-amount">80 EGP</span>
+                                        <span class="price-period">/month</span>
+                                    </div>
 
-                        <div class="table-row">
-                            <div class="table-cell feature-cell">Support</div>
-                            <div class="table-cell plan-cell">Community</div>
-                            <div class="table-cell plan-cell">Email</div>
-                            <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
-                            <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
-                            <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
-                        </div>
+                                </div>
+                                <div class="plan-features">
+                                    <ul class="feature-list">
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Up to 3 data sources</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Basic analytics</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>1GB data storage</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Community support</span>
+                                        </li>
+                                        <li class="feature-item disabled">
+                                            <i class="fas fa-times"></i>
+                                            <span>Priority support</span>
+                                        </li>
+                                        <li class="feature-item disabled">
+                                            <i class="fas fa-times"></i>
+                                            <span>Advanced ML models</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="plan-actions">
+                                    <button class="btn-plan btn-primary" plan-choosed="TheOne">
+                                        <i class="fas fa-arrow-up"></i> Pick This
+                                    </button>
+                                </div>
+                                <button class="expand-btn">
+                                    View Details <i class="expand-icon fas fa-chevron-down"></i>
+                                </button>
+                            </div>
 
-                        <div class="table-row">
-                            <div class="table-cell feature-cell">Priority Support</div>
-                            <div class="table-cell plan-cell cross-cell"><i class="fas fa-times"></i></div>
-                            <div class="table-cell plan-cell cross-cell"><i class="fas fa-times"></i></div>
-                            <div class="table-cell plan-cell limited-cell">24 hours</div>
-                            <div class="table-cell plan-cell limited-cell">2 hours</div>
-                            <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
-                        </div>
+                            <!-- Starter Plan -->
+                            <div class="plan-card" data-plan="FastCart">
+                                <div class="plan-header">
+                                    <h3 class="plan-name">Fast Cart</h3>
+                                    <p class="plan-desc">For Low stock & Fast checkout</p>
+                                    <div class="plan-price">
+                                        <span class="price-amount">280 EGP</span>
+                                        <span class="price-period">/month</span>
+                                    </div>
+                                </div>
+                                <div class="plan-features">
+                                    <ul class="feature-list">
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Up to 10 data sources</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Advanced analytics</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>10GB data storage</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Email support</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Basic ML models</span>
+                                        </li>
+                                        <li class="feature-item disabled">
+                                            <i class="fas fa-times"></i>
+                                            <span>Priority support</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="plan-actions">
+                                    <button class="btn-plan btn-primary" plan-choosed="FastCart">
+                                        <i class="fas fa-arrow-up"></i> Pick This
+                                    </button>
+                                </div>
+                                <button class="expand-btn">
+                                    View Details <i class="expand-icon fas fa-chevron-down"></i>
+                                </button>
+                            </div>
 
-                        <div class="table-row">
-                            <div class="table-cell feature-cell">ML / AI Features</div>
-                            <div class="table-cell plan-cell cross-cell"><i class="fas fa-times"></i></div>
-                            <div class="table-cell plan-cell limited-cell">Basic</div>
-                            <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
-                            <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
-                            <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
-                        </div>
+                            <!-- Professional Plan (Most Popular) -->
+                            <div class="plan-card popular" data-plan="FastCartplus">
+                                <div class="popular-badge">MOST POPULAR</div>
+                                <div class="plan-header">
+                                    <h3 class="plan-name">Fast Cart Plus</h3>
+                                    <p class="plan-desc">For medium stock & Fast checkout</p>
+                                    <div class="plan-price">
+                                        <span class="price-amount">370 EGP</span>
+                                        <span class="price-period">/month</span>
+                                    </div>
+                                    <small>Billed annually: $59/month</small>
+                                </div>
+                                <div class="plan-features">
+                                    <ul class="feature-list">
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Unlimited data sources</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Advanced analytics</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>100GB data storage</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Priority support (24h)</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Advanced ML models</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Team collaboration</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="plan-actions">
+                                    <button class="btn-plan btn-primary" plan-choosed="FastCartplus">
+                                        <i class="fas fa-bolt"></i> Pick this
+                                    </button>
+                                </div>
+                                <button class="expand-btn">
+                                    View Details <i class="expand-icon fas fa-chevron-down"></i>
+                                </button>
+                            </div>
 
-                        <div class="table-row">
-                            <div class="table-cell feature-cell">Team Members</div>
-                            <div class="table-cell plan-cell">1</div>
-                            <div class="table-cell plan-cell">3</div>
-                            <div class="table-cell plan-cell">10</div>
-                            <div class="table-cell plan-cell">50</div>
-                            <div class="table-cell plan-cell">Unlimited</div>
+                            <!-- Business Plan -->
+                            <div class="plan-card" data-plan="Matagerfull">
+                                <div class="plan-header">
+                                    <h3 class="plan-name">Matager Full</h3>
+                                    <p class="plan-desc">For larger organizations</p>
+                                    <div class="plan-price">
+                                        <span class="price-amount">750 EGP</span>
+                                        <span class="price-period">/month</span>
+                                    </div>
+                                </div>
+                                <div class="plan-features">
+                                    <ul class="feature-list">
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Unlimited data sources</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Enterprise analytics</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>1TB data storage</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Priority support (2h)</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Custom ML models</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Advanced security</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="plan-actions">
+                                    <button class="btn-plan btn-primary" plan-choosed="Matagerfull">
+                                        <i class="fas fa-building"></i> Pick This
+                                    </button>
+                                </div>
+                                <button class="expand-btn">
+                                    View Details <i class="expand-icon fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+
+                            <!-- Enterprise Plan -->
+                            <div class="plan-card" data-plan="Matagerfullplus">
+                                <div class="plan-header">
+                                    <h3 class="plan-name">Matager Full Plus</h3>
+                                    <p class="plan-desc">For mission-critical deployments</p>
+                                    <div class="plan-price">
+                                        <span class="price-amount">1300 EGP</span>
+                                        <span class="price-period">/month</span>
+                                    </div>
+                                    <small>+ free Matager POS Subscription</small>
+                                </div>
+                                <div class="plan-features">
+                                    <ul class="feature-list">
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Unlimited everything</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Custom analytics suite</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Unlimited storage</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>24/7 dedicated support</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>Custom AI/ML solutions</span>
+                                        </li>
+                                        <li class="feature-item">
+                                            <i class="fas fa-check"></i>
+                                            <span>SLA & custom contracts</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="plan-actions">
+                                    <button class="btn-plan btn-primary" plan-choosed="Matagerfullplus">
+                                        <i class="fas fa-headset"></i> Contact Sales
+                                    </button>
+                                </div>
+                                <button class="expand-btn">
+                                    View Details <i class="expand-icon fas fa-chevron-down"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="scroll-hint">
-                        <i class="fas fa-arrow-right"></i>
-                        <span>Scroll to see all features</span>
-                        <i class="fas fa-arrow-left"></i>
+
+                    <!-- Comparison Section -->
+                    <div class="comparison-section">
+                        <div class="comparison-table">
+                            <div class="table-header">
+                                <div class="table-cell">Feature</div>
+                                <div class="table-cell">The One</div>
+                                <div class="table-cell">Fast Cart</div>
+                                <div class="table-cell">Fast Cart Plus</div>
+                                <div class="table-cell">Matager Full</div>
+                                <div class="table-cell">Matager Full Plus</div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell feature-cell">Data Sources</div>
+                                <div class="table-cell plan-cell">3</div>
+                                <div class="table-cell plan-cell">10</div>
+                                <div class="table-cell plan-cell">Unlimited</div>
+                                <div class="table-cell plan-cell">Unlimited</div>
+                                <div class="table-cell plan-cell">Unlimited</div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell feature-cell">Data Storage</div>
+                                <div class="table-cell plan-cell">1 GB</div>
+                                <div class="table-cell plan-cell">10 GB</div>
+                                <div class="table-cell plan-cell">100 GB</div>
+                                <div class="table-cell plan-cell">1 TB</div>
+                                <div class="table-cell plan-cell">Unlimited</div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell feature-cell">Support</div>
+                                <div class="table-cell plan-cell">Community</div>
+                                <div class="table-cell plan-cell">Email</div>
+                                <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
+                                <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
+                                <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell feature-cell">Priority Support</div>
+                                <div class="table-cell plan-cell cross-cell"><i class="fas fa-times"></i></div>
+                                <div class="table-cell plan-cell cross-cell"><i class="fas fa-times"></i></div>
+                                <div class="table-cell plan-cell limited-cell">24 hours</div>
+                                <div class="table-cell plan-cell limited-cell">2 hours</div>
+                                <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell feature-cell">ML / AI Features</div>
+                                <div class="table-cell plan-cell cross-cell"><i class="fas fa-times"></i></div>
+                                <div class="table-cell plan-cell limited-cell">Basic</div>
+                                <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
+                                <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
+                                <div class="table-cell plan-cell check-cell"><i class="fas fa-check"></i></div>
+                            </div>
+
+                            <div class="table-row">
+                                <div class="table-cell feature-cell">Team Members</div>
+                                <div class="table-cell plan-cell">1</div>
+                                <div class="table-cell plan-cell">3</div>
+                                <div class="table-cell plan-cell">10</div>
+                                <div class="table-cell plan-cell">50</div>
+                                <div class="table-cell plan-cell">Unlimited</div>
+                            </div>
+                        </div>
+                        <div class="scroll-hint">
+                            <i class="fas fa-arrow-right"></i>
+                            <span>Scroll to see all features</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Elements
-                const toggleBtns = document.querySelectorAll('.toggle-btn');
-                const plansSection = document.querySelector('.plans-section');
-                const comparisonSection = document.querySelector('.comparison-section');
-                const planCards = document.querySelectorAll('.plan-card');
-                const expandBtns = document.querySelectorAll('.expand-btn');
-
-                // Variables
-                let expandedCard = null;
-                let isMobile = window.innerWidth <= 900;
-
-                // 1. View Toggle Functionality
-                toggleBtns.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const view = btn.dataset.view;
-
-                        // Update active button
-                        toggleBtns.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-
-                        // Show/hide sections
-                        if (view === 'plans') {
-                            plansSection.classList.remove('hidden');
-                            plansSection.classList.add('active');
-                            comparisonSection.classList.remove('active');
-                        } else {
-                            plansSection.classList.add('hidden');
-                            comparisonSection.classList.add('active');
-                            plansSection.classList.remove('active');
-                        }
-                    });
-                });
-
-                // 2. Plan Card Expand/Collapse (Mobile Only)
-                function setupMobileCards() {
-                    planCards.forEach(card => {
-                        const features = card.querySelector('.plan-features');
-
-                        // Reset all cards
-                        card.classList.remove('expanded');
-                        if (features) {
-                            features.style.maxHeight = null;
-                        }
-
-                        // Add click handler for mobile
-                        if (isMobile) {
-                            card.addEventListener('click', function (e) {
-                                // Don't trigger if clicking on button
-                                if (e.target.closest('.btn-plan') || e.target.closest('.expand-btn')) {
-                                    return;
-                                }
-
-                                toggleCard(this);
-                            });
-                        }
-                    });
-
-                    // Expand button handlers
-                    expandBtns.forEach(btn => {
-                        btn.addEventListener('click', function (e) {
-                            e.stopPropagation();
-                            const card = this.closest('.plan-card');
-                            toggleCard(card);
-                        });
-                    });
-                }
-
-                function toggleCard(card) {
-                    if (!isMobile) return;
-
-                    if (card === expandedCard) {
-                        // Collapse
-                        card.classList.remove('expanded');
-                        expandedCard = null;
-                    } else {
-                        // Collapse previously expanded card
-                        if (expandedCard) {
-                            expandedCard.classList.remove('expanded');
-                        }
-                        // Expand this card
-                        card.classList.add('expanded');
-                        expandedCard = card;
-
-                        // Scroll to expanded card
-                        setTimeout(() => {
-                            card.scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'center'
-                            });
-                        }, 300);
-                    }
-                }
-
-                // 3. Plan Selection Functionality
-                function selectPlan(planType) {
-                    console.log(`Selected plan: ${planType}`);
-                    // Here you would typically redirect to checkout or show a modal
-                    alert(`You selected the ${planType.toUpperCase()} plan!`);
-                }
-
-                // Add click handlers to upgrade buttons
-                document.querySelectorAll('.btn-primary').forEach(btn => {
-                    btn.addEventListener('click', function (e) {
-                        e.stopPropagation();
-                        const card = this.closest('.plan-card');
-                        const planType = card.dataset.plan;
-                        selectPlan(planType);
-                    });
-                });
-
-                // 4. Handle Window Resize
-                function handleResize() {
-                    const newIsMobile = window.innerWidth <= 900;
-
-                    if (newIsMobile !== isMobile) {
-                        isMobile = newIsMobile;
-                        setupMobileCards();
-
-                        // Reset expanded card on desktop
-                        if (!isMobile && expandedCard) {
-                            expandedCard.classList.remove('expanded');
-                            expandedCard = null;
-                        }
-                    }
-                }
-
-                // 5. Initialize
-                setupMobileCards();
-                window.addEventListener('resize', handleResize);
-
-                // 6. Comparison table scroll hint
-                const scrollHint = document.querySelector('.scroll-hint');
-                const comparisonTable = document.querySelector('.comparison-table');
-
-                if (comparisonTable && scrollHint) {
-                    comparisonTable.addEventListener('scroll', function () {
-                        if (this.scrollLeft > 10) {
-                            scrollHint.style.opacity = '0.5';
-                        } else {
-                            scrollHint.style.opacity = '1';
-                        }
-                    });
-                }
-            });
-        </script>
-
-
 
 
 
         <section id="Faq" class="section fac-section">
-            <!-- FAQ Section -->
-            <div class="faq-section">
-                <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="glassycardlight">
+                <div class="faq-section">
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Can I switch plans at any time?</span>
-                        <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
-                    </div>
-                    <div class="faq-answer">
-                        Yes, you can upgrade or downgrade your plan at any time. When upgrading, you'll be charged a
-                        prorated amount for the remainder of your billing cycle. When downgrading, the changes will
-                        take
-                        effect at the start of your next billing cycle.
-                    </div>
-                </div>
+                    <h2 class="section-title">Frequently Asked Questions</h2>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Is there a free trial for paid plans?</span>
-                        <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Can I switch plans at any time?</span>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, you can upgrade or downgrade your plan at any time. When upgrading, you'll be charged a
+                            prorated amount for the remainder of your billing cycle. When downgrading, the changes will
+                            take
+                            effect at the start of your next billing cycle.
+                        </div>
                     </div>
-                    <div class="faq-answer">
-                        Yes, all paid plans come with a 14-day free trial. You can test all the features of the plan
-                        without
-                        providing credit card information. After 14 days, you'll need to choose a plan to continue
-                        using the
-                        service.
-                    </div>
-                </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What payment methods do you accept?</span>
-                        <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Is there a free trial for paid plans?</span>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, all paid plans come with a 14-day free trial. You can test all the features of the plan
+                            without
+                            providing credit card information. After 14 days, you'll need to choose a plan to continue
+                            using the
+                            service.
+                        </div>
                     </div>
-                    <div class="faq-answer">
-                        We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank
-                        transfers
-                        for annual plans. For Enterprise plans, we also accept purchase orders and can arrange
-                        custom
-                        payment terms.
-                    </div>
-                </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Do you offer discounts for non-profits or educational institutions?</span>
-                        <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What payment methods do you accept?</span>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank
+                            transfers
+                            for annual plans. For Enterprise plans, we also accept purchase orders and can arrange
+                            custom
+                            payment terms.
+                        </div>
                     </div>
-                    <div class="faq-answer">
-                        Yes, we offer a 50% discount for registered non-profit organizations and educational
-                        institutions.
-                        Please contact our sales team with proof of your status to get the discount applied to your
-                        account.
-                    </div>
-                </div>
 
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What happens to my data if I cancel my subscription?</span>
-                        <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>Do you offer discounts for non-profits or educational institutions?</span>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Yes, we offer a 50% discount for registered non-profit organizations and educational
+                            institutions.
+                            Please contact our sales team with proof of your status to get the discount applied to your
+                            account.
+                        </div>
                     </div>
-                    <div class="faq-answer">
-                        Your data is preserved for 30 days after cancellation, during which you can reactivate your
-                        account
-                        and retain all data. After 30 days, your data will be permanently deleted from our servers.
-                        We
-                        recommend exporting your data before cancellation if you wish to keep it.
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span>What happens to my data if I cancel my subscription?</span>
+                            <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                        </div>
+                        <div class="faq-answer">
+                            Your data is preserved for 30 days after cancellation, during which you can reactivate your
+                            account
+                            and retain all data. After 30 days, your data will be permanently deleted from our servers.
+                            We
+                            recommend exporting your data before cancellation if you wish to keep it.
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- FAQ Section -->
+
         </section>
 
         <!-- CTA Section -->
         <section id="cta" class="section cta-section">
-            <div class="section-content">
-                <div class="cta-card">
-                    <h2 class="cta-title">Ready to Transform Your Business Workflow</h2>
-                    <p class="cta-subtitle">Join thousands of data teams using Matager to streamline their data
-                        operations. Start for free with no credit card required.</p>
-                    <div class="cta-form">
-                        <input type="email" class="cta-input" placeholder="Enter your work email">
-                        <button class="btn-primary">Get Started </button>
+            <div class="glassycardlight">
+                <div class="section-content">
+                    <div class="cta-card">
+                        <h2 class="cta-title">Ready to Transform Your Business Workflow</h2>
+                        <p class="cta-subtitle">Join thousands of data teams using Matager to streamline their data
+                            operations. Start for free with no credit card required.</p>
+                        <div class="cta-form">
+                            <input type="email" class="cta-input" placeholder="Enter your work email">
+                            <button class="btn-primary">Get Started </button>
+                        </div>
+                        <p style="margin-top: 1.5rem; color: #94a3b8; font-size: 0.9rem;">Free 14-day trial • No credit
+                            card
+                            required</p>
                     </div>
-                    <p style="margin-top: 1.5rem; color: #94a3b8; font-size: 0.9rem;">Free 14-day trial • No credit card
-                        required</p>
                 </div>
             </div>
         </section>
@@ -1501,7 +1666,7 @@
 
             const sections = document.querySelectorAll('.section');
             const scrollDots = document.querySelectorAll('.scroll-dot');
-            const navLinks = document.querySelectorAll('.nav-link');
+            // const navLinks = document.querySelectorAll('.nav-link');
 
             // Set first section as active initially
             let currentSection = 0;
@@ -1534,9 +1699,9 @@
                         scrollDots.forEach(dot => dot.classList.remove('active'));
                         scrollDots[index].classList.add('active');
 
-                        // Update nav links
-                        navLinks.forEach(link => link.classList.remove('active'));
-                        navLinks[index].classList.add('active');
+                        // // Update nav links
+                        // navLinks.forEach(link => link.classList.remove('active'));
+                        // navLinks[index].classList.add('active');
                     }
                 });
             }
@@ -1553,12 +1718,12 @@
             });
 
             // Add click events to nav links
-            navLinks.forEach((link, index) => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    scrollToSection(index);
-                });
-            });
+            // navLinks.forEach((link, index) => {
+            //     link.addEventListener('click', (e) => {
+            //         e.preventDefault();
+            //         scrollToSection(index);
+            //     });
+            // });
 
             // Update on scroll
             window.addEventListener('scroll', updateActiveSection);
@@ -1566,18 +1731,6 @@
             // Initialize
             updateActiveSection();
 
-            // Copy code button
-            const copyBtn = document.querySelector('.copy-btn');
-            copyBtn.addEventListener('click', function () {
-                const code = document.querySelector('pre').textContent;
-                navigator.clipboard.writeText(code).then(() => {
-                    const originalText = copyBtn.textContent;
-                    copyBtn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyBtn.textContent = originalText;
-                    }, 2000);
-                });
-            });
 
             // Form submission
             const ctaForm = document.querySelector('.cta-form');
@@ -1618,12 +1771,7 @@
 
 
         // FAQ Toggle
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
-            });
-        });
+
 
 
         const observer = new IntersectionObserver((entries) => {
@@ -1633,7 +1781,7 @@
                     entry.target.style.transform = 'translateY(0)';
                 }
             });
-        }, observerOptions);
+        },);
 
         // Observe plan cards
         document.querySelectorAll('.plan-card').forEach(card => {
@@ -1646,6 +1794,8 @@
 
 
     </script>
+
+
 
 
 

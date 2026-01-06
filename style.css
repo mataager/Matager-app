@@ -100,10 +100,14 @@ body {
     opacity: 0;
 }
 
+.firstsection {
+    padding-top: 0px !important;
+}
+
 .section-content {
     max-width: 2300px;
     margin: 0 auto;
-    padding: 2rem;
+    /* padding: 2rem; */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
@@ -126,7 +130,7 @@ body {
     /* Fluid typography */
     text-transform: uppercase;
     font-weight: 100;
-    background: linear-gradient(to right, #f0f9ff, #e0f2fe);
+    background: linear-gradient(to right, #769eb9, #e0f2fe);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -393,6 +397,7 @@ footer {
 }
 
 /* Scroll Indicator */
+/* Scroll Indicator */
 .scroll-indicator {
     padding: 10px;
     background: rgba(15, 23, 42, 0.8);
@@ -409,11 +414,16 @@ footer {
 }
 
 .scroll-dot {
-    width: 22px;
-    height: 4px;
+    width: 15px;
+    height: 2px;
     background-color: #475569;
     transition: all 0.3s;
     cursor: pointer;
+}
+
+.scroll-dot:hover {
+    background-color: #38bdf8;
+    transform: scale(1.2);
 }
 
 .scroll-dot.active {
@@ -424,7 +434,7 @@ footer {
 /* Responsive */
 @media (max-width: 620px) {
     .hero-section .section-content {
-        padding-top: 145px !important;
+        padding-top: 40px !important;
     }
 }
 
@@ -486,6 +496,7 @@ footer {
 /* Login Form */
 .login-container {
     /* Your existing styles preserved */
+    margin: 25px;
     background: rgba(15, 23, 42, 0.8);
     border-radius: 16px;
     padding: 2rem;
@@ -744,6 +755,7 @@ footer {
 
 
 .section-subtitle {
+    width: 250px;
     font-size: 1.1rem;
     color: #64748b;
     max-width: 700px;
@@ -757,15 +769,13 @@ footer {
 
 
 .plan-card {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(2, 132, 199, 0.05));
-    border: 1px solid rgb(56 189 248 / 39%);
-    border-radius: 24px;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgb(81 107 174 / 13%);
+    border: 1px solid rgb(160 194 255 / 10%);
+    backdrop-filter: blur(100px);
+    transition: all 0.3s ease;
     border-radius: 16px;
     padding: 2.5rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    /* transition: var(--fa-font-brands); */
     position: relative;
     display: flex;
     flex-direction: column;
@@ -880,14 +890,8 @@ footer {
 /* Comparison Table */
 
 /* FAQ Section */
-.faq-section {
-    margin-top: 5rem;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 2rem;
-}
 
+/* FAQ Section - Enhanced with smooth animations */
 .faq-title {
     text-align: center;
     font-size: 2rem;
@@ -896,54 +900,169 @@ footer {
 }
 
 .faq-item {
+    margin-bottom: 20px;
     border-radius: 8px;
-    margin-bottom: 1rem;
     overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-question {
-    background: rgb(15 23 42);
-    border: 1px solid #334155;
-    border-radius: 16px;
     padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     font-weight: 600;
-    color: var(--dark);
+    border-radius: 18px;
+    background: rgb(81 107 174 / 13%);
+    border: 1px solid rgb(160 194 255 / 10%);
+    transition: all 0.3s ease;
+}
+
+/* Enhanced active state for question */
+.faq-item.active .faq-question {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-color: rgb(160 194 255 / 30%);
+    background: rgb(81 107 174 / 20%);
 }
 
 .faq-answer {
-    margin-top: 10px;
-    margin-inline: 15px;
-    border-radius: 16px;
-    background: #152036;
-    padding: 20px 2rem 1.5rem;
+    /* Start with collapsed state */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+
+    /* Layout styles - keep your original styles */
+    margin-top: 4px;
+    background: rgb(81 107 174 / 13%);
+    /* padding: 10px; */
     color: #64748b;
-    display: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    /* Smooth transition for height, opacity and padding */
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Improve performance */
+    will-change: max-height, opacity, padding;
+
+    /* Prevent content flash */
+    contain: content;
 }
 
+/* Expanded state */
 .faq-item.active .faq-answer {
-    display: block;
+    line-height: 2;
+    padding: 25px;
+    max-height: 500px !important;
+    /* Adjust based on your content */
+    opacity: 1;
+}
+
+.faq-toggle {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .faq-item.active .faq-toggle i {
     transform: rotate(180deg);
 }
 
-.faq-toggle {
-    transition: var(--transition);
+/* Smooth arrow rotation with bounce effect */
+.faq-toggle i {
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
+
+.faq-item.active .faq-toggle i {
+    transform: rotate(180deg) scale(1.1);
+}
+
+/* Optional: Add subtle animation for active FAQ item */
+.faq-item.active {
+    transform: translateY(-2px);
+}
+
+/* Optional: Add smooth entrance animation for answer content */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.faq-item.active .faq-answer {
+    animation: fadeInUp 0.5s ease;
+}
+
+/* Optional: Add a subtle separator line when expanded */
+.faq-answer::before {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(160 194 255 / 30%), transparent);
+    margin: 0 0 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.2s;
+}
+
+.faq-item.active .faq-answer::before {
+    opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .faq-answer {
+        margin-inline: 15px;
+        padding: 0 1.5rem;
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 15px 1.5rem 1rem;
+        max-height: 800px;
+        /* Larger for mobile in case of longer content */
+    }
+
+    .faq-question {
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+/* For very long FAQ answers, ensure smooth scrolling */
+.faq-answer {
+    /* padding: 25px; */
+    scrollbar-width: thin;
+    scrollbar-color: rgb(81 107 174 / 50%) transparent;
+}
+
+.faq-answer::-webkit-scrollbar {
+    width: 6px;
+}
+
+.faq-answer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.faq-answer::-webkit-scrollbar-thumb {
+    background-color: rgb(81 107 174 / 50%);
+    border-radius: 3px;
+}
+
 
 
 
 @media (max-width: 768px) {
     .plans-grid {
         grid-template-columns: 1fr;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
+        /* max-width: 400px; */
+        /* margin-left: auto; */
+        /* margin-right: auto; */
     }
 
     .table-header,
@@ -991,21 +1110,22 @@ footer {
 
 /* Step Card */
 .step-card {
-    transition: all 0.3s ease;
     z-index: 10;
     display: flex;
     align-items: flex-start;
     gap: 20px;
     padding: 25px;
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(2, 132, 199, 0.05));
-    border: 1px solid rgb(56 189 248 / 39%);
-    border-radius: 24px;
+    background: rgb(81 107 174 / 13%);
+    border: 1px solid rgb(160 194 255 / 10%);
+    backdrop-filter: blur(100px);
+    transition: all 0.3s ease;
+    border-radius: 16px;
     position: relative;
 }
 
 .step-card:hover {
     border-color: transparent;
-    background: #101a2e;
+    /* background: #101a2e; */
     box-shadow: 0 8px 25px rgba(79, 70, 229, 0.1);
 }
 
@@ -1349,9 +1469,9 @@ footer {
 }
 
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .terms-container {
@@ -1399,8 +1519,8 @@ footer {
 
 .success-title {
     font-size: 1.5rem;
-    font-weight: 700;
-    color: #1e293b;
+    font-weight: 400;
+    color: white;
     margin-bottom: 0.5rem;
 }
 
@@ -1421,56 +1541,11 @@ footer {
     }
 }
 
-/* Scroll indicator */
-.scroll-text-indicator {
-    bottom: 0;
-    position: absolute;
-    bottom: -3rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0.7;
-    animation: bounce 2s infinite;
-}
-
-.scroll-text {
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.fa-chevron-down {
-    color: #0ca0e4
-}
-
-@keyframes bounce {
-
-    0%,
-    20%,
-    50%,
-    80%,
-    100% {
-        transform: translateY(0) translateX(-50%);
-    }
-
-    40% {
-        transform: translateY(-10px) translateX(-50%);
-    }
-
-    60% {
-        transform: translateY(-5px) translateX(-50%);
-    }
-}
 
 
 
 /*  */
-.Pricing-section {
-    padding: 4rem 2rem;
-    height: max-content;
-}
+
 
 
 
@@ -1524,26 +1599,24 @@ footer {
 }
 
 /* Plans Grid */
-.plans-section {
-    height: 600px;
-    display: block;
-}
+
 
 .plans-section.hidden {
     display: none;
 }
 
 .plans-grid {
-    box-shadow: 0 2px 15px #0ca1e42e;
+    padding: 30px;
+    /* box-shadow: 0 2px 15px #0ca1e42e; */
     border-radius: 15px;
     border-bottom-right-radius: 80px;
     border-top-right-radius: 80px;
-    padding: 40px 30px;
     overflow: scroll;
     display: flex;
     gap: 1.5rem;
     justify-content: flex-start;
     transition: all 0.3s ease;
+    align-items: center;
 }
 
 .logo-main {
@@ -1571,26 +1644,22 @@ footer {
         top: 50%;
     }
 
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
     .plans-grid {
+        width: -webkit-fill-available;
+        /* padding-top: 81px; */
         height: 625px;
         border: none;
         flex-direction: column;
         align-items: center;
-        padding: 1rem;
-        box-shadow: 0 2px 15px #0ca1e42e;
+        padding: 0px;
+        /* box-shadow: 0 2px 15px #0ca1e42e; */
         border-radius: 25px;
     }
 
-    .comparison-table {
-        width: 700px;
-    }
 
     .comparison-section,
     .plans-section {
+        justify-content: flex-start !important;
         /* box-shadow: 0 2px 15px #0ca1e42e; */
         padding: 0px !important;
     }
@@ -1655,9 +1724,7 @@ footer {
 }
 
 @media (max-width: 800px) {
-    .comparison-table {
-        max-width: 500px;
-    }
+
 
     .table-header,
     .table-row {
@@ -1783,15 +1850,18 @@ footer {
 
 /* Comparison Section */
 .comparison-section {
+    height: 700px;
+    max-width: 480px;
     padding: 40px 30px;
-    height: 600px;
     display: none;
     margin-inline: auto;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .comparison-section.active,
 .plans-section.active {
-    display: block;
+    display: flex;
     animation: fadeIn 0.5s ease;
 }
 
@@ -1808,8 +1878,9 @@ footer {
 }
 
 .comparison-table {
+    /* height: 600px; */
     border-radius: 33px;
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
     overflow-x: auto;
 }
@@ -2017,7 +2088,7 @@ footer {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 15px;
+    padding: 12px 35px;
     border-radius: 8px;
     transition: all 0.3s;
 }
@@ -2033,6 +2104,8 @@ footer {
 }
 
 .payment-details {
+    flex-direction: column;
+    gap: 1.1rem;
     font-size: 0.9rem;
     color: #6e84a3;
     margin-top: 20px;
@@ -2074,5 +2147,55 @@ footer {
     .wallet-options {
         flex-direction: column;
         gap: 10px;
+    }
+}
+
+
+.glassycardlight {
+    border-radius: 18px;
+    margin: 30px;
+    background: rgb(234 239 253 / 5%);
+    padding: 30px 40px;
+    border: 1px solid rgb(160 194 255 / 10%);
+    transition: all 0.3s ease;
+}
+
+.glassycardlighter {
+    border-radius: 18px;
+    background: rgb(81 107 174 / 13%);
+    border: 1px solid rgb(160 194 255 / 10%);
+    transition: all 0.3s ease;
+}
+
+/* Add this for helper text */
+.select-helper {
+    font-size: 12px;
+    color: #3498db;
+    margin-top: 4px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.select-helper:hover {
+    opacity: 0.3;
+}
+
+/*  */
+
+
+/* FAQ Section Styling */
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
     }
 }
