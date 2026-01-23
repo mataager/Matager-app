@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const businessField = document.getElementById("business-field");
   const phoneField = document.getElementById("phone-field");
   const businessLocationField = document.getElementById(
-    "business-location-field"
+    "business-location-field",
   );
   const planField = document.getElementById("plan-field");
   const paymentSummaryField = document.getElementById("payment-summary-field");
@@ -348,14 +348,13 @@ document.addEventListener("DOMContentLoaded", function () {
       progressContainer.classList.remove("show");
 
       // Update success message with user's name
-      document.querySelector(
-        ".success-title"
-      ).textContent = `Welcome, ${firstName}!`;
+      document.querySelector(".success-title").textContent =
+        `Welcome, ${firstName}!`;
     } else {
       // Login form submission
       const email = document.getElementById("email").value;
       alert(
-        `Logging in with email: ${email}\n(In a real app, this would authenticate with a backend)`
+        `Logging in with email: ${email}\n(In a real app, this would authenticate with a backend)`,
       );
       // Here you would typically send the data to your backend
     }
@@ -377,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .querySelector(".btn-secondary")
     .addEventListener("click", function () {
       alert(
-        "Demo mode activated! This would show a preview of the Matager dashboard."
+        "Demo mode activated! This would show a preview of the Matager dashboard.",
       );
     });
 
@@ -516,7 +515,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         answer.removeEventListener("transitionend", transitionEndHandler);
       },
-      { once: true }
+      { once: true },
     );
   }
 
@@ -547,7 +546,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         answer.removeEventListener("transitionend", transitionEndHandler);
       },
-      { once: true }
+      { once: true },
     );
   }
 

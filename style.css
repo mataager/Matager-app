@@ -7,45 +7,99 @@
 }
 
 body {
+    margin: 0;
+    padding: 0;
     font-family: 'custom';
     color: #e2e8f0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative;
+    /* This ensures the background stays pinned while content scrolls */
     overflow-x: hidden;
+    background: #064874;
+    /* Fallback color */
+}
+
+/* The Animated Layer */
+body::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: -1;
+
+    /* Complex Mesh Gradient */
+    background: radial-gradient(circle at 50% 50%, #0b8793 0%, transparent 50%),
+        radial-gradient(circle at 20% 30%, #360033 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, #0a3236 0%, transparent 40%),
+        radial-gradient(circle at 30% 80%, #064874 0%, transparent 50%);
+
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+
+    /* This creates the "Shock" factor: The Gooey Filter */
+    filter: blur(60px) contrast(1.2);
+    animation: liquidMove 15s ease-in-out infinite alternate;
+}
+
+/* Glassmorphism Overlay (Optional but adds premium depth) */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: brightness(0.9) saturate(1.5);
+    z-index: -1;
+}
+
+@keyframes liquidMove {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        background-position: 0% 0%;
+    }
+
+    33% {
+        transform: translate(5%, 10%) rotate(5deg) scale(1.1);
+        background-position: 100% 50%;
+    }
+
+    66% {
+        transform: translate(-5%, 5%) rotate(-5deg) scale(1.2);
+        background-position: 50% 100%;
+    }
+
+    100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        background-position: 0% 0%;
+    }
 }
 
 /* Optional: Define specific gradients for sections */
 
 
-.bg-pricing {
-    background: linear-gradient(135deg, #243949 0%, #517fa4 100%);
-}
 
-/* Animated Gradient Background */
-.gradient-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    background: #130f40;
-    background-image: linear-gradient(315deg, #130f40 0%, #000000 74%);
-    animation: gradientShift 15s ease-in-out infinite alternate;
-}
 
-@keyframes gradientShift {
+
+
+
+@keyframes drift {
     0% {
         background-position: 0% 0%;
+        filter: hue-rotate(0deg);
+    }
+
+    50% {
+        background-position: 100% 100%;
     }
 
     100% {
-        background-position: 100% 100%;
+        background-position: 0% 100%;
+        filter: hue-rotate(15deg);
+        /* Very subtle color shift */
     }
 }
-
 
 
 /* Main Content Sections */
@@ -68,10 +122,15 @@ body {
 }
 
 .main-content {
+    display: flex;
     margin: 0 auto;
+    gap: 150px;
+    flex-direction: column;
 }
 
 .section {
+    padding: 12px 20px;
+    transition: all 0.3s ease;
     align-items: center;
     /* padding-block: 2rem; */
     position: relative;
@@ -108,9 +167,7 @@ body {
 /* Hero Section */
 
 
-.hero-text {
-    padding-right: 2rem;
-}
+
 
 
 
@@ -121,7 +178,7 @@ body {
     /* Fluid typography */
     text-transform: uppercase;
     font-weight: 100;
-    background: linear-gradient(to right, #769eb9, #e0f2fe);
+    background: linear-gradient(to right, rgb(255 255 255), #e0f2fe);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -140,7 +197,8 @@ body {
     display: flex;
     gap: 1rem;
     margin-bottom: 3rem;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .highlight-text {
@@ -164,9 +222,9 @@ body {
 }
 
 .btn-secondary {
-    background: transparent;
+    background: linear-gradient(145deg, #161b2e 0%, #1c2336 100%);
     color: #cbd5e1;
-    border: 1px solid #475569;
+    border: none;
     border-radius: 8px;
     padding: 0.9rem 1.8rem;
     font-weight: 500;
@@ -176,7 +234,6 @@ body {
 
 .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.05);
-    border-color: #64748b;
 }
 
 .hero-visual {
@@ -391,8 +448,8 @@ footer {
 /* Scroll Indicator */
 .scroll-indicator {
     padding: 10px;
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid #334155;
+    background: rgb(33 39 53 / 34%);
+    /* border: 1px solid #334155; */
     border-radius: 10px;
     position: fixed;
     top: 90%;
@@ -405,7 +462,7 @@ footer {
 }
 
 .scroll-dot {
-    width: 15px;
+    width: 5px;
     height: 2px;
     background-color: #475569;
     transition: all 0.3s;
@@ -423,11 +480,7 @@ footer {
 }
 
 /* Responsive */
-@media (max-width: 620px) {
-    .hero-section .section-content {
-        padding-top: 40px !important;
-    }
-}
+
 
 @media (max-width: 1024px) {
     .section-content {
@@ -486,9 +539,9 @@ footer {
 
 /* Login Form */
 .login-container {
-    /* Your existing styles preserved */
-    /* margin: 25px; */
-    background: rgba(15, 23, 42, 0.8);
+    background: rgb(33 39 53 / 34%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     padding: 2rem;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
@@ -581,8 +634,10 @@ footer {
     font-weight: 500;
 }
 
+
+
 .form-input {
-    background: rgba(30, 41, 59, 0.7);
+    background: linear-gradient(145deg, #161b2e 0%, #1c2336 100%);
     border: 1px solid #475569;
     border-radius: 8px;
     padding: 0.9rem 1rem;
@@ -682,14 +737,13 @@ footer {
 }
 
 .social-btn {
+    border: none;
+    background: linear-gradient(180deg, #1e263a 0%, #161b2e 100%);
     text-decoration: none;
     flex: 1;
     display: flex;
-    align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background: rgba(30, 41, 59, 0.7);
-    border: 1px solid #475569;
     border-radius: 8px;
     padding: 0.8rem;
     color: #cbd5e1;
@@ -697,7 +751,9 @@ footer {
     cursor: pointer;
     transition: all 0.3s;
     flex-wrap: wrap;
-    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    max-width: 284px;
 }
 
 .social-btn:hover {
@@ -760,7 +816,7 @@ footer {
 
 
 .plan-card {
-    background: rgb(81 107 174 / 13%);
+    background: rgb(33 39 53 / 34%);
     border: 1px solid rgb(160 194 255 / 10%);
     backdrop-filter: blur(100px);
     transition: all 0.3s ease;
@@ -797,7 +853,7 @@ footer {
 
 
 .plan-name {
-    font-size: 1.5rem;
+    font-size: 22px;
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
@@ -805,7 +861,7 @@ footer {
 .plan-desc {
     color: #64748b;
     font-size: 0.95rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .plan-price {
@@ -814,9 +870,8 @@ footer {
 }
 
 .price-amount {
-    font-size: 2rem;
+    font-size: 22px;
     font-weight: 600;
-    color: var(--dark);
 }
 
 .price-period {
@@ -891,6 +946,7 @@ footer {
 }
 
 .faq-item {
+    max-width: 600px;
     margin-bottom: 20px;
     border-radius: 8px;
     overflow: hidden;
@@ -898,14 +954,14 @@ footer {
 }
 
 .faq-question {
-    padding: 1.5rem 2rem;
+    padding: 1.1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     font-weight: 600;
     border-radius: 18px;
-    background: rgb(81 107 174 / 13%);
+    background: rgb(33 39 53 / 34%);
     border: 1px solid rgb(160 194 255 / 10%);
     transition: all 0.3s ease;
 }
@@ -915,7 +971,7 @@ footer {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     border-color: rgb(160 194 255 / 30%);
-    background: rgb(123 160 255 / 20%);
+    background: rgb(33 39 53 / 80%);
 }
 
 .faq-answer {
@@ -926,7 +982,7 @@ footer {
 
     /* Layout styles - keep your original styles */
     margin-top: 4px;
-    background: rgb(81 107 174 / 13%);
+    background: rgb(33 39 53 / 80%);
     /* padding: 10px; */
     color: #64748b;
     border-bottom-left-radius: 10px;
@@ -1091,6 +1147,11 @@ footer {
 
 /* Steps Container */
 .steps-container {
+    border-radius: 18px;
+    padding: 20px;
+    background: rgb(33 39 53 / 34%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -1105,19 +1166,11 @@ footer {
     align-items: flex-start;
     gap: 20px;
     padding: 25px;
-    background: rgb(81 107 174 / 13%);
-    border: 1px solid rgb(160 194 255 / 10%);
-    backdrop-filter: blur(100px);
     transition: all 0.3s ease;
     border-radius: 16px;
     position: relative;
 }
 
-.step-card:hover {
-    border-color: transparent;
-    /* background: #101a2e; */
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.1);
-}
 
 /* Step Number */
 .step-number {
@@ -1192,10 +1245,12 @@ footer {
 
 /* Download Section */
 .download-section {
+    background: rgb(33 39 53 / 34%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 30px;
     border-radius: 18px;
     padding: 2.5rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
 }
 
 .download-title {
@@ -1214,18 +1269,8 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    margin-bottom: 32px;
 }
 
-.download-btn {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 24px;
-    border-radius: 12px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
 
 .download-btn:hover {
     transform: translateY(-2px);
@@ -1241,48 +1286,13 @@ footer {
     color: white;
 }
 
-/* QR Code Section */
-.qr-section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding-top: 24px;
-    border-top: 1px solid #e2e8f0;
-}
-
-.qr-code {
-    width: 80px;
-    height: 80px;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 8px;
-    border: 1px solid #e2e8f0;
-}
-
-.qr-code img {
-    height: 100%;
-}
-
-.qr-text h4 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.qr-text p {
-    color: #64748b;
-    font-size: 14px;
-    margin: 0;
-}
-
-/* // */
-
 
 
 /* Hero section styling */
 .hero-text {
+    margin-top: 40px;
     position: relative;
-    padding-right: 2rem;
+    /* padding-right: 2rem; */
 }
 
 /* Login/Signup Container */
@@ -1304,8 +1314,8 @@ footer {
 
 .form-input:focus {
     outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    border-color: #5482a7;
+    box-shadow: none;
 }
 
 .password-container {
@@ -1552,8 +1562,8 @@ footer {
 /* View Toggle */
 .view-toggle {
     width: 300px;
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    background: rgb(33 39 53 / 34%);
+    border: 1px solid #2c303f;
     border-radius: 12px;
     display: flex;
     justify-content: space-around;
@@ -1851,6 +1861,7 @@ footer {
     justify-content: center;
 }
 
+
 .comparison-section.active,
 .plans-section.active {
     display: flex;
@@ -2028,10 +2039,10 @@ footer {
 }
 
 .payment-summary {
+    background: linear-gradient(180deg, #1e263a 0%, #161b2e 100%);
     font-size: 0.9rem;
     color: #6e84a3;
     padding: 25px;
-    background: rgba(15, 23, 42, 0.8);
     border: 1px solid #334155;
     border-radius: 16px;
 }
@@ -2075,8 +2086,8 @@ footer {
 }
 
 .payment-option-content {
-    background: rgba(15, 23, 42, 0.8);
-    border: 1px solid rgba(56, 189, 248, 0.2);
+    border: 1px solid #334155;
+    background: linear-gradient(180deg, #1e263a 0%, #161b2e 100%);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -2096,13 +2107,13 @@ footer {
 }
 
 .payment-details {
+    background: linear-gradient(180deg, #1e263a 0%, #161b2e 100%);
     flex-direction: column;
     gap: 1.1rem;
     font-size: 0.9rem;
     color: #6e84a3;
     margin-top: 20px;
     padding: 25px;
-    background: rgba(15, 23, 42, 0.8);
     border: 1px solid #334155;
     border-radius: 16px;
 }
@@ -2143,21 +2154,8 @@ footer {
 }
 
 
-.glassycardlight {
-    border-radius: 18px;
-    margin: 15px;
-    background: rgb(234 239 253 / 5%);
-    padding: 12px 20px;
-    border: 1px solid rgb(160 194 255 / 10%);
-    transition: all 0.3s ease;
-}
 
-.glassycardlighter {
-    border-radius: 18px;
-    background: rgb(81 107 174 / 13%);
-    border: 1px solid rgb(160 194 255 / 10%);
-    transition: all 0.3s ease;
-}
+
 
 /* Add this for helper text */
 .select-helper {
@@ -2189,5 +2187,217 @@ footer {
 
     100% {
         transform: rotate(360deg);
+    }
+}
+
+/*  */
+/* Floating Nav Styles */
+.mini-float-nav {
+    /* position: absolute; */
+    /* top: -85; */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 10px 25px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 100;
+}
+
+.float-nav-right {
+    right: 15px;
+}
+
+.float-nav-left {
+    left: 15px;
+}
+
+.mini-float-nav a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.mini-float-nav a:hover {
+    color: #007bff;
+}
+
+
+/* Store Circles Styles */
+.recent-stores-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.store-circles {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 10px 10px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.store-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin-block: 0.5rem;
+}
+
+.store-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-left: -12px;
+    /* Creates the overlapping effect */
+    background: #eee;
+    object-fit: cover;
+}
+
+.store-img:first-child {
+    margin-left: 0;
+}
+
+/* Enhanced Download Section Styles */
+.download-section-enhanced {
+    padding: 2rem;
+    text-align: center;
+}
+
+
+
+.download-buttons-enhanced {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.download-btn {
+    gap: 16px;
+    color: #fff;
+    backdrop-filter: blur(10px);
+    background: rgb(33 39 53 / 34%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+
+.download-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+
+.btn-icon-container {
+    color: #0284c7;
+    font-size: 2rem;
+    margin-right: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.btn-text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.btn-label {
+    font-weight: 300;
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-bottom: 0.2rem;
+}
+
+.btn-platform {
+    font-size: 1.4rem;
+    font-weight: 300;
+    margin-bottom: 0.2rem;
+}
+
+.btn-version {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    color: #0284c7;
+}
+
+.platform-options {
+    margin-top: 1rem;
+}
+
+.other-platforms {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+}
+
+.platform-link {
+    color: #0284c7;
+    text-decoration: none;
+    margin: 0 0.3rem;
+    font-weight: 600;
+}
+
+.platform-link:hover {
+    text-decoration: underline;
+}
+
+.download-info {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #475569;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.info-item i {
+    color: #0284c7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .download-buttons-enhanced {
+        gap: 1rem;
+    }
+
+    .download-btn {
+        padding: 1rem;
+    }
+
+    .download-info {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
     }
 }
